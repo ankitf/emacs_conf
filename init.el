@@ -188,38 +188,11 @@
 ;; start emacs server
 ;; (server-start)
 
-;; ;; edit chrome with emacs
-;; ;; (add-to-list 'load-path "~/.emacs.d")
-;; ;; (require 'edit-server)
-;; ;; (edit-server-start)
+;; edit chrome with emacs
+;; (add-to-list 'load-path "~/.emacs.d")
+;; (require 'edit-server)
+;; (edit-server-start)
 
-;; ;;; ; setup the mail client - mu4e
-;; ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-;; ;; (require 'mu4e)
-;; ;; (setq mail-user-agent 'mu4e-user-agent)
-;; ;; (setq mu4e-maildir "/home/ankit/emacs/Maildir"
-;; ;; 	  mu4e-send-folder "/home/ankit/emacs/Maildir/send"
-;; ;; 	  my4e-drafts-folder "/home/ankit/emacs/Maildir/drafts"
-;; ;; 	  user-mail-address "ankit.f.parmar@gmail.com"
-;; ;; 	  smtpmail-default-smtp-server   "smtp.gmail.com"
-;; ;; 	  smtpmail-smtp-server           "smtp.gmail.com"
-;; ;; 	  smtpmail-smtp-service 587)
-
-;; ;; (defvar my-mu4e-account-alist
-;; ;;   '(("Gmail"
-;; ;;      (mu4e-sent-folder "/Gmail/sent")
-;; ;;      (user-mail-address "ankit.f.parmar@gmail.com")
-;; ;;      (smtpmail-smtp-user "ankit.f.parmar")
-;; ;;      (smtpmail-local-domain "gmail.com")
-;; ;;      (smtpmail-default-smtp-server "smtp.gmail.com")
-;; ;;      (smtpmail-smtp-server "smtp.gmail.com")
-;; ;;      (smtpmail-smtp-service 587)
-;; ;;      )
-;; ;;      ;; Include any other accounts here ...
-;; ;;     ))
-
-;; ;; (setq
-;; ;;  message-send-mail-function     'smtpmail-send-it
 
 
 ;; disable menu-bar too;bar and scroll bar
@@ -373,22 +346,6 @@
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
 (global-set-key (kbd "C-x C-f") #'helm-find-files)
 (helm-mode 1)
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EXWM CONFIG;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; ;;(require 'exwm)
-;; ;; (require 'exwm-config)
-;; ;; (exwm-config-default)
-
-;; ;; load exwm
-;; ;; (require 'exwm )
-;; ;; (require 'exwm-config)
-;; ;; (exwm-config-ido)
-
-;; ;; set the initial number of workspaces
-;; ;;(setq exwm-workspace-number 4)
 
 
 ;; User-Defined init.el ends here
