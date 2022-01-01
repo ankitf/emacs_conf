@@ -1,0 +1,48 @@
+
+* Straight Package Manager
+** Bootstrapping straight
+#+BEGIN_SRC emacs-lisp
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+#+END_SRC
+
+** Install use-package
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package 'use-package)
+  (use-package straight
+    :custom (straight-use-package-by-default t))
+#+END_SRC
+
+* Backspace Key
+  Set ctrl+h as backspace and ctrl+? as emacs-help
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-?") 'help-command)
+(global-set-key (kbd "M-?") 'mark-paragraph)
+(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "M-h") 'backward-kill-word)
+#+END_SRC
+
+* Helm
+  Completions in the minibuffer
+#+BEGIN_SRC elisp
+  (use-package helm 
+   :straight t
+   :config
+     (helm-mode 1)
+   :bind (("M-x" . help-M-x)
+   ("C-x r b" . helm-filtered-bookmarks)
+   ("C-x C-f" . helm-find-files)))
+#+END_SRC
+
+
+  
