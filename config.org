@@ -1,5 +1,5 @@
 
-* Straight Package Manager
+* Straight Package Manager 
 ** Bootstrapping straight
 #+BEGIN_SRC emacs-lisp
 (defvar bootstrap-version)
@@ -34,7 +34,7 @@
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "M-?") 'mark-paragraph)
 (global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "M-h") 'backward-kill-word)
+(global-set-key (kbd "C-M-h") 'backward-kill-word)
 #+END_SRC
 
 * Helm
@@ -101,3 +101,60 @@
   (display-time-mode t)
 #+END_SRC
 
+* Python setup
+** Python Virtual environment
+   I have dedicated a virtual environment for emacs related python packages.
+   Make sure to include the requirement.txt of this env to .emacs.d git repo.
+#+BEGIN_SRC elisp
+  (use-package pyvenv
+    :straight t
+    :config
+    (pyvenv-activate "~/.virtualenvs/emacs-virtualenv"))
+#+END_SRC
+** Elpy
+#+BEGIN_SRC elisp
+  (use-package elpy
+    :straight t
+    :init
+  (elpy-enable))
+#+END_SRC   
+** Jedi
+#+BEGIN_SRC elisp
+  (use-package jedi
+    :straight t
+    :init
+    (add-hook 'python-mode-hook #'jedi:setup)
+    :config
+    (setq jedi:setup-keys t))
+   ;; (setq jedi:complete-on-dot t)
+#+END_SRC
+** py-autopep8
+#+BEGIN_SRC elisp
+  (use-package py-autopep8
+    :straight t
+    :init
+    (add-hook 'elpy-mode-hook #'py-autopep8-enable-on-save))
+#+END_SRC      
+
+* Hideshow - Code Folding
+  Change the folding levels in the according to the language. 
+#+BEGIN_SRC elisp
+  (use-package hideshow
+    :straight t
+    :init
+    (add-hook 'python-mode-hook #'hs-minor-mode)
+    :bind (("C--" . "C-u 2 C-c @ C-l")  ;; Fold everything below level 2, very helpful in python class file.
+	   ;; ("C--" . 'hs-hide-level)
+	   ("C-=" . 'hs-toggle-hiding)))
+
+#+END_SRC   
+
+* Pomodoro Timer
+  Productivity timer. Give undivided attention to a specific task for 25 mins. Take a short break after.
+  Timer will start in the emacs status bar.
+#+BEGIN_SRC elisp
+  (use-package pomodoro
+    :straight t
+    :config
+    (pomodoro-add-to-mode-line)
+#+END_SRC 
