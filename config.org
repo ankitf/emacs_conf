@@ -15,7 +15,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 #+END_SRC
-
 ** Install use-package
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'use-package)
@@ -23,6 +22,12 @@
     :custom (straight-use-package-by-default t))
 #+END_SRC
 
+* Emacs Startup
+  Hide the startup message
+#+BEGIN_SRC elisp
+(setq inhibit-startup-message t)
+#+END_SRC
+   
 * Backspace Key
   Set ctrl+h as backspace and ctrl+? as emacs-help
 #+BEGIN_SRC emacs-lisp
@@ -39,10 +44,60 @@
    :straight t
    :config
      (helm-mode 1)
-   :bind (("M-x" . help-M-x)
+   :bind (("M-x" . helm-M-x)
    ("C-x r b" . helm-filtered-bookmarks)
    ("C-x C-f" . helm-find-files)))
 #+END_SRC
 
+* Org Bullets
+#+BEGIN_SRC elisp
+  (use-package org-bullets
+    :straight t
+    :init
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
 
-  
+* Emacs theme
+** Tango-dark theme
+   Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
+#+BEGIN_SRC elisp
+    (use-package tango-dark-theme
+       :straight (tango-dark-theme
+		  :host github 
+		  :repo "ankitf/tango-dark-theme"
+		  :branch "main")
+       :defer t
+       :config (load-theme 'tango-dark))
+
+#+END_SRC
+
+* Simple Clip - Clipboard Copy/Paste
+  Simplified access to sytem clipboard.
+#+BEGIN_SRC elisp
+  (use-package simpleclip
+    :straight t
+    :config
+    (simpleclip-mode 1)
+    :bind
+    (("s-c" . simpleclip-copy)
+     ("s-v" . simpleclip-paste)))
+#+END_SRC
+
+* Emacs Window Visuals
+** Disable menu-bar, tool-bar and scroll-bar
+#+BEGIN_SRC elisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+END_SRC
+** Shrink fringes/borders to 1 pixel   
+#+BEGIN_SRC elisp
+(fringe-mode 1)
+#+END_SRC
+
+* Display time Mode
+#+BEGIN_SRC elisp
+  (setq display-time-default-load-average nil)
+  (display-time-mode t)
+#+END_SRC
+
