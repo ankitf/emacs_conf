@@ -156,5 +156,5 @@
   (use-package pomodoro
     :straight t
     :config
-    (pomodoro-add-to-mode-line)
+    (pomodoro-add-to-mode-line))
 #+END_SRC 
