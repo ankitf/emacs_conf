@@ -61,14 +61,23 @@
 ** Tango-dark theme
    Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
 #+BEGIN_SRC elisp
-    (use-package tango-dark-theme
-       :straight (tango-dark-theme
-		  :host github 
-		  :repo "ankitf/tango-dark-theme"
-		  :branch "main")
-       :defer t
-       :config (load-theme 'tango-dark))
+  ;; (use-package tango-dark-theme
+  ;;    :straight (tango-dark-theme
+  ;; 	      :host github 
+  ;; 	      :repo "ankitf/tango-dark-theme"
+  ;; 	      :branch "main")
+     ;; :defer t
+     ;; :config (load-theme 'tango-dark))
 
+#+END_SRC
+** Zenburn
+   [[https://github.com/bbatsov/zenburn-emacs][Github]]
+   Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
+#+BEGIN_SRC elisp
+  (use-package zenburn-theme
+    :straight t
+    :config
+    (load-theme 'zenburn t))
 #+END_SRC
 
 * Simple Clip - Clipboard Copy/Paste
@@ -158,3 +167,12 @@
     :config
     (pomodoro-add-to-mode-line))
 #+END_SRC 
+
+* Ace window - Emacs window switching
+#+BEGIN_SRC elisp
+  (use-package ace-window
+    :straight t
+    :bind ("C-x o" . ace-window))
+#+END_SRC
+  
+  
