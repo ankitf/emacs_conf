@@ -37,17 +37,71 @@
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 #+END_SRC
 
-* Helm
+* Minibuffer Completions
+  [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
+  Have tried Helm. Not happy with buffers all over in the completions.
+  Will be trying vertico, orderless, emarbark  and marginilia. 
+** Helm
   Completions in the minibuffer
 #+BEGIN_SRC elisp
-  (use-package helm 
-   :straight t
-   :config
-     (helm-mode 1)
-   :bind (("M-x" . helm-M-x)
-   ("C-x r b" . helm-filtered-bookmarks)
-   ("C-x C-f" . helm-find-files)))
+  ;; (use-package helm 
+  ;;  :straight t
+  ;;  :config
+  ;;    (helm-mode 1)
+  ;;  :bind (("M-x" . helm-M-x)
+  ;;  ("C-x r b" . helm-filtered-bookmarks)
+  ;;  ("C-x C-f"
+    ;; . helm-find-files)))
 #+END_SRC
+** Vertico
+#+BEGIN_SRC elisp
+  (use-package vertico
+    :straight t
+    :init (vertico-mode)
+    )
+#+END_SRC
+** Orderless
+#+BEGIN_SRC elisp
+  (use-package orderless
+    :straight t
+    :init
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+    (setq completion-styles '(orderless)
+	  completion-category-defaults nil
+	  completion-category-overrides '((file (styles partial-completion))))
+  )
+#+END_SRC
+** Marginilia
+#+BEGIN_SRC elisp
+  (use-package marginalia
+    :straight t
+    :config
+    (marginalia-mode)
+  )
+#+END_SRC
+** Embark
+#+BEGIN_SRC elisp
+  (use-package embark
+    :straight t 
+    :bind
+    (("C-." . embark-act)         ;; pick some comfortable binding
+     ("C-;" . embark-dwim)        ;; good alternative: M-.
+     ("C-c b" . embark-bindings)) ;; alternative for `describe-bindings'
+    :init
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		   nil
+		   (window-parameters (mode-line-format . none))))
+  )
+
+#+END_SRC
+
 
 * Org Bullets
 #+BEGIN_SRC elisp
