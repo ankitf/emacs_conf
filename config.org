@@ -278,3 +278,11 @@
     ;; (telephone-line-mode 1))
 #+END_SRC      
    
+
+* Magit - Git Interface of Emacs
+#+BEGIN_SRC elisp
+  (use-package magit
+    :straight t
+    )
+#+END_SRC
+  
