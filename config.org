@@ -133,7 +133,24 @@
     (load-theme 'zenburn t))
 #+END_SRC
 
-* Simple Clip - Clipboard Copy/Paste
+* Aggressive Indent 
+  Keeps your code always indented.
+  [[https://github.com/Malabarba/aggressive-indent-mode][github]]
+#+BEGIN_SRC elisp
+  (use-package aggressive-indent
+    :straight t
+    :config
+    (global-aggressive-indent-mode 1)
+    (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+  )
+#+END_SRC  
+* Clipboard Copy/Paste
+** Default
+   Makes killing/yanking interact with the clipboard
+#+BEGIN_SRC elisp
+  (setq-default x-select-enable-clipboard t)
+#+END_SRC
+** Simpleclip  
   Simplified access to sytem clipboard.
 #+BEGIN_SRC elisp
   (use-package simpleclip
@@ -239,10 +256,10 @@
 #+END_SRC 
 ** Minions
 #+BEGIN_SRC elisp
-  (use-package minions
-    :straight t
-    :config
-    (minions-mode 1))
+  ;; (use-package minions
+    ;; :straight t
+    ;; :config
+    ;; (minions-mode 1))
 #+END_SRC
 ** Doom modeline
    [[https://github.com/seagle0128/doom-modeline][github]]
@@ -255,9 +272,9 @@
 ** Telephone line
    [[https://github.com/dbordak/telephone-line][github]]
 #+BEGIN_SRC elisp
-  (use-package telephone-line
-    :straight t
-    :init
-    (telephone-line-mode 1))
+  ;; (use-package telephone-line
+    ;; :straight t
+    ;; :init
+    ;; (telephone-line-mode 1))
 #+END_SRC      
    
