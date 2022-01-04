@@ -102,7 +102,6 @@
 
 #+END_SRC
 
-
 * Org Bullets
 #+BEGIN_SRC elisp
   (use-package org-bullets
@@ -229,4 +228,36 @@
     :bind ("C-x o" . ace-window))
 #+END_SRC
   
-  
+* Modeline Beautification
+** Moodline
+   [[https://github.com/jessiehildebrandt/mood-line][github]]
+#+BEGIN_SRC elisp
+  (use-package mood-line
+    :straight t
+    :config
+    (mood-line-mode))
+#+END_SRC 
+** Minions
+#+BEGIN_SRC elisp
+  (use-package minions
+    :straight t
+    :config
+    (minions-mode 1))
+#+END_SRC
+** Doom modeline
+   [[https://github.com/seagle0128/doom-modeline][github]]
+#+BEGIN_SRC elisp
+  ;; (use-package doom-modeline
+  ;;   :straight t
+  ;;   :init
+  ;;   (doom-modeline-mode 1))
+#+END_SRC   
+** Telephone line
+   [[https://github.com/dbordak/telephone-line][github]]
+#+BEGIN_SRC elisp
+  (use-package telephone-line
+    :straight t
+    :init
+    (telephone-line-mode 1))
+#+END_SRC      
+   
