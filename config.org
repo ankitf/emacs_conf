@@ -24,7 +24,7 @@
 
 * Emacs Startup
   Hide the startup message
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
    
@@ -58,7 +58,7 @@
   Will be trying vertico, orderless, emarbark  and marginilia. 
 ** Helm
   Completions in the minibuffer
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package helm 
   ;;  :straight t
   ;;  :config
@@ -71,7 +71,7 @@
 ** Vertico
    Vertical completion UI for minibuffer. Unlike Helm, which opens new buffer for completions.
    [[https://github.com/minad/vertico][github]]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package vertico
     :straight (vertico :files (:defaults "extensions/*")
 		       :includes (vertico-directory)) ;; append to this list to use other vertico extenstions.
@@ -80,13 +80,13 @@
 #+END_SRC
 ** Vertico Directory
    Ido like directory navigation in vertico.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package vertico-directory
     :straight nil
     )
 #+END_SRC
 ** Orderless
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package orderless
     :straight t
     :init
@@ -99,7 +99,7 @@
     )
 #+END_SRC
 ** Marginilia
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package marginalia
     :straight t
     :config
@@ -107,7 +107,7 @@
     )
 #+END_SRC
 ** Embark
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package embark
     :straight t 
     :bind
@@ -128,7 +128,7 @@
 #+END_SRC
 ** SaveHist
    Persists history over emacs restarts. Vertico sorts by history position.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package savehist
     :straight t
     :init
@@ -137,7 +137,7 @@
 #+END_SRC
 ** Ido mode
    Nothing better than ido for suggestion in find-file and buffers.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package ido
   ;;   :straight t
   ;;   :config
@@ -147,7 +147,7 @@
 #+END_SRC
 ** Ido-vertical mode
    Nothing better than ido for suggestion in find-file and buffers.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package ido-vertical-mode
   ;;   :straight t
   ;;   :init
@@ -158,7 +158,7 @@
 #+END_SRC
 
 * Org mode
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package org
     :straight nil             ;; cloning org mode takes a long time.  
     :bind (:map org-mode-map
@@ -168,7 +168,7 @@
 
 #+END_SRC
 * Org Bullets
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :straight t
     :init
@@ -178,7 +178,7 @@
 * Emacs theme
 ** Tango-dark theme
    Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package tango-dark-theme
   ;;    :straight (tango-dark-theme
   ;; 	      :host github 
@@ -191,7 +191,7 @@
 ** Zenburn
    [[https://github.com/bbatsov/zenburn-emacs][Github]]
    Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package zenburn-theme
     :straight t
     :config
@@ -201,7 +201,7 @@
 * Aggressive Indent 
   Keeps your code always indented.
   [[https://github.com/Malabarba/aggressive-indent-mode][github]]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :straight t
     :config
@@ -212,12 +212,12 @@
 * Clipboard Copy/Paste
 ** Default
    Makes killing/yanking interact with the clipboard
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (setq-default x-select-enable-clipboard t)
 #+END_SRC
 ** Simpleclip  
   Simplified access to sytem clipboard.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package simpleclip
     :straight t
     :config
@@ -229,18 +229,18 @@
 
 * Emacs Window Visuals
 ** Disable menu-bar, tool-bar and scroll-bar
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 #+END_SRC
 ** Shrink fringes/borders to 1 pixel   
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (fringe-mode 1)
 #+END_SRC
 
 * Display time Mode
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (setq display-time-default-load-average nil)
   (display-time-mode t)
 #+END_SRC
@@ -249,14 +249,14 @@
 ** Python Virtual environment
    I have dedicated a virtual environment for emacs related python packages.
    Make sure to include the requirement.txt of this env to .emacs.d git repo.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package pyvenv
     :straight t
     :config
     (pyvenv-activate "~/.virtualenvs/emacs-virtualenv"))
 #+END_SRC
 ** Elpy
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package elpy
     :straight t
     :init
@@ -265,7 +265,7 @@
     (elpy-enable))
 #+END_SRC   
 ** Jedi
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   :straight t
   ;;   :init
@@ -275,7 +275,7 @@
   ;;  ;; (setq jedi:complete-on-dot t)
 #+END_SRC
 ** py-autopep8
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package py-autopep8
     :straight t
     :init
@@ -284,7 +284,7 @@
 
 * Hideshow - Code Folding
   Change the folding levels in the according to the language. 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package hideshow
     :straight t
     :init
@@ -298,7 +298,7 @@
 * Pomodoro Timer
   Productivity timer. Give undivided attention to a specific task for 25 mins. Take a short break after.
   Timer will start in the emacs status bar.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package pomodoro
     :straight t
     :config
@@ -306,7 +306,7 @@
 #+END_SRC 
 
 * Ace window - Emacs window switching
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :straight t
     :bind ("C-x o" . ace-window))
@@ -315,14 +315,14 @@
 * Modeline Beautification
 ** Moodline
    [[https://github.com/jessiehildebrandt/mood-line][github]]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package mood-line
     :straight t
     :config
     (mood-line-mode))
 #+END_SRC 
 ** Minions
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package minions
     ;; :straight t
     ;; :config
@@ -330,7 +330,7 @@
 #+END_SRC
 ** Doom modeline
    [[https://github.com/seagle0128/doom-modeline][github]]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package doom-modeline
   ;;   :straight t
   ;;   :init
@@ -338,7 +338,7 @@
 #+END_SRC   
 ** Telephone line
    [[https://github.com/dbordak/telephone-line][github]]
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package telephone-line
     ;; :straight t
     ;; :init
@@ -347,7 +347,7 @@
    
 * Magit - Git Interface of Emacs
   Magit is *magic*. 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package magit
     :straight t
     )
@@ -355,7 +355,7 @@
 * Silver Searcher Ag 
   Mostly suggested by projectile
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (use-package ag
     :straight t
     )
@@ -363,7 +363,7 @@
   
 * Projectile - Project Interaction Library
   Prequisite - Install "the_silver_searcher_ag" and "fd" on arch linux. Install ag in emacs.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
    (use-package projectile
      :straight t
      :config
@@ -376,7 +376,7 @@
 
 * Github Markdown
   Preview github markdown to edit readme.rd files.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package grip-mode
     :straight t
     :bind (("C-c g" . grip-mode))
