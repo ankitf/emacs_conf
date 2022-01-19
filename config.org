@@ -382,3 +382,8 @@
     :bind (("C-c g" . grip-mode))
   )
 #+END_SRC
+* Tab width
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
+#+END_SRC(use
+
