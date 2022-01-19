@@ -372,8 +372,6 @@
      :bind-keymap ("C-c p" . projectile-command-map)
      )
 #+END_SRC 
-  
-
 * Github Markdown
   Preview github markdown to edit readme.rd files.
 #+BEGIN_SRC emacs-lisp
@@ -385,5 +383,16 @@
 * Tab width
 #+BEGIN_SRC emacs-lisp
 (setq-default tab-width 4)
-#+END_SRC(use
+#+END_SRC
+* Terminal window 
+  Open a terminal window
+#+BEGIN_SRC emacs-lisp
+(defun terminal-window()
+  (interactive)
+  (ansi-term (executable-find "bash")))
+
+(global-set-key (kbd "C-x t") 'terminal-window) 
+
+#+END_SRC
+
 
