@@ -27,225 +27,239 @@
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
-   
+
 * Backspace Key
-  Set ctrl+h as backspace and ctrl+? as emacs-help
+Set ctrl+h as backspace and ctrl+? as emacs-help
 #+BEGIN_SRC emacs-lisp
-  (defun delete-word (arg)
-    "Delete characters forward until encountering the end of a word.
+(defun delete-word (arg)
+  "Delete characters forward until encountering the end of a word.
   With argument, do this that many times."
-    (interactive "p")
-    (if (use-region-p)
-	(delete-region (region-beginning) (region-end))
-      (delete-region (point) (progn (forward-word arg) (point)))))
+  (interactive "p")
+  (if (use-region-p)
+	  (delete-region (region-beginning) (region-end))
+    (delete-region (point) (progn (forward-word arg) (point)))))
 
-  (defun backward-delete-word (arg)
-    "Delete characters backward until encountering the end of a word.
+(defun backward-delete-word (arg)
+  "Delete characters backward until encountering the end of a word.
   With argument, do this that many times."
-    (interactive "p")
-    (delete-word (- arg)))
+  (interactive "p")
+  (delete-word (- arg)))
 
-  (global-set-key (kbd "C-?") 'help-command)
-  (global-set-key (kbd "M-?") 'mark-paragraph)
-  (global-set-key (kbd "C-h") 'delete-backward-char)
-  (global-set-key (kbd "M-h") 'backward-delete-word)
+(global-set-key (kbd "C-?") 'help-command)
+(global-set-key (kbd "M-?") 'mark-paragraph)
+(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "M-h") 'backward-delete-word)
 
 #+END_SRC
 
 * Minibuffer Completions
-  [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
-  Have tried Helm. Not happy with buffers all over in the completions.
-  Will be trying vertico, orderless, emarbark  and marginilia. 
+[[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
+Have tried Helm. Not happy with buffers all over in the completions.
+Will be trying vertico, orderless, emarbark  and marginilia. 
 ** Helm
-  Completions in the minibuffer
+Completions in the minibuffer
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package helm 
-  ;;  :straight t
-  ;;  :config
-  ;;    (helm-mode 1)
-  ;;  :bind (("M-x" . helm-M-x)
-  ;;  ("C-x r b" . helm-filtered-bookmarks)
-  ;;  ("C-x C-f"
-    ;; . helm-find-files)))
+;; (use-package helm 
+;;  :straight t
+;;  :config
+;;    (helm-mode 1)
+;;  :bind (("M-x" . helm-M-x)
+;;  ("C-x r b" . helm-filtered-bookmarks)
+;;  ("C-x C-f"
+;; . helm-find-files)))
 #+END_SRC
 ** Vertico
-   Vertical completion UI for minibuffer. Unlike Helm, which opens new buffer for completions.
-   [[https://github.com/minad/vertico][github]]
+Vertical completion UI for minibuffer. Unlike Helm, which opens new buffer for completions.
+[[https://github.com/minad/vertico][github]]
 #+BEGIN_SRC emacs-lisp
-  (use-package vertico
-    :straight (vertico :files (:defaults "extensions/*")
-		       :includes (vertico-directory)) ;; append to this list to use other vertico extenstions.
-    :init (vertico-mode)
-    )
+(use-package vertico
+  :straight (vertico :files (:defaults "extensions/*")
+					 :includes (vertico-directory)) ;; append to this list to use other vertico extenstions.
+  :init (vertico-mode)
+  )
 #+END_SRC
 ** Vertico Directory
-   Ido like directory navigation in vertico.
+Ido like directory navigation in vertico.
 #+BEGIN_SRC emacs-lisp
-  (use-package vertico-directory
-    :straight nil
-    )
+(use-package vertico-directory
+  :straight nil
+  )
 #+END_SRC
 ** Orderless
 #+BEGIN_SRC emacs-lisp
-  (use-package orderless
-    :straight t
-    :init
-    ;; Configure a custom style dispatcher (see the Consult wiki)
-    ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
-    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-    (setq completion-styles '(orderless)
-	  completion-category-defaults nil
-	  completion-category-overrides '((file (styles partial-completion))))
-    )
+(use-package orderless
+  :straight t
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless)
+		completion-category-defaults nil
+		completion-category-overrides '((file (styles partial-completion))))
+  )
 #+END_SRC
 ** Marginilia
 #+BEGIN_SRC emacs-lisp
-  (use-package marginalia
-    :straight t
-    :config
-    (marginalia-mode)
-    )
+(use-package marginalia
+  :straight t
+  :config
+  (marginalia-mode)
+  )
 #+END_SRC
 ** Embark
 #+BEGIN_SRC emacs-lisp
-  (use-package embark
-    :straight t 
-    :bind
-    (("C-." . embark-act)         ;; pick some comfortable binding
-     ("C-;" . embark-dwim)        ;; good alternative: M-.
-     ("C-c b" . embark-bindings)) ;; alternative for `describe-bindings'
-    :init
-    ;; Optionally replace the key help with a completing-read interface
-    (setq prefix-help-command #'embark-prefix-help-command)
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-		   nil
-		   (window-parameters (mode-line-format . none))))
-    )
+(use-package embark
+  :straight t 
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-c b" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+			   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+				 nil
+				 (window-parameters (mode-line-format . none))))
+  )
 
 #+END_SRC
 ** SaveHist
-   Persists history over emacs restarts. Vertico sorts by history position.
+Persists history over emacs restarts. Vertico sorts by history position.
 #+BEGIN_SRC emacs-lisp
-  (use-package savehist
-    :straight t
-    :init
-    (savehist-mode)
-    )
+(use-package savehist
+  :straight t
+  :init
+  (savehist-mode)
+  )
 #+END_SRC
 ** Ido mode
-   Nothing better than ido for suggestion in find-file and buffers.
+Nothing better than ido for suggestion in find-file and buffers.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package ido
-  ;;   :straight t
-  ;;   :config
-  ;;   (setq ido-enable-flex-matching t)
-  ;;   (ido-mode t)
-  ;;   )
+;; (use-package ido
+;;   :straight t
+;;   :config
+;;   (setq ido-enable-flex-matching t)
+;;   (ido-mode t)
+;;   )
 #+END_SRC
 ** Ido-vertical mode
-   Nothing better than ido for suggestion in find-file and buffers.
+Nothing better than ido for suggestion in find-file and buffers.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package ido-vertical-mode
-  ;;   :straight t
-  ;;   :init
-  ;;   (ido-vertical-mode t)
-  ;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-  ;;   )
+;; (use-package ido-vertical-mode
+;;   :straight t
+;;   :init
+;;   (ido-vertical-mode t)
+;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+;;   )
 
 #+END_SRC
 
 * Org mode
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :straight nil             ;; cloning org mode takes a long time.  
-    :bind (:map org-mode-map
-		("M-h" . nil) ;; Using this for backward-delete-word
-	      )
-    )
+(use-package org
+  :straight nil             ;; cloning org mode takes a long time.  
+  :bind (:map org-mode-map
+			  ("M-h" . nil) ;; Using this for backward-delete-word
+			  )
+  )
 
 #+END_SRC
 * Org Bullets
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :straight t
-    :init
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(use-package org-bullets
+  :straight t
+  :init
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
-* Emacs theme
+* Emacs themes
 ** Tango-dark theme
-   Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
+Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package tango-dark-theme
-  ;;    :straight (tango-dark-theme
-  ;; 	      :host github 
-  ;; 	      :repo "ankitf/tango-dark-theme"
-  ;; 	      :branch "main")
-     ;; :defer t
-     ;; :config (load-theme 'tango-dark))
+;; (use-package tango-dark-theme
+;;    :straight (tango-dark-theme
+;; 	      :host github 
+;; 	      :repo "ankitf/tango-dark-theme"
+;; 	      :branch "main")
+;; :defer t
+;; :config (load-theme 'tango-dark))
 
 #+END_SRC
 ** Zenburn
-   [[https://github.com/bbatsov/zenburn-emacs][Github]]
-   Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
+[[https://github.com/bbatsov/zenburn-emacs][Github]]
+Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
 #+BEGIN_SRC emacs-lisp
-  (use-package zenburn-theme
-	:straight t
-	:config
-	(load-theme 'zenburn t))
-#+END_SRC
-** Nord
-   [[https://www.nordtheme.com/docs/ports/emacs][website]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package nord-theme
+  ;; (use-package zenburn-theme
   ;;   :straight t
   ;;   :config
-  ;;   (load-theme 'nord t))
+  ;;   (load-theme 'zenburn t))
+#+END_SRC
+** Nord
+[[https://www.nordtheme.com/docs/ports/emacs][website]]
+#+BEGIN_SRC emacs-lisp
+;; (use-package nord-theme
+;;   :straight t
+;;   :config
+;;   (load-theme 'nord t))
 #+END_SRC
 ** Manoj dark
-   [[https://www.nordtheme.com/docs/ports/emacs][website]]
+[[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
-  ;; (load-theme 'manoj-dark)
+;; (load-theme 'manoj-dark)
 #+END_SRC
-
+** Doom themes
+   [[https://github.com/doomemacs/themes][github]]
+#+begin_src emacs-lisp
+(use-package doom-themes
+    :straight (doom-themes :host github
+					   :repo "doomemacs/themes"
+					   :branch "master")
+    :config 
+	(setq doom-themes-enable-bold t	 ; if nil, bold is universally disabled ;
+	      doom-themes-enable-etalic t)	;
+    (load-theme 'doom-one t)
+	;; corrects (and improved) org-mode's native fontification
+	(doom-themes-org-config)
+)
+#+end_src
 * Aggressive Indent 
-  Keeps your code always indented.
-  [[https://github.com/Malabarba/aggressive-indent-mode][github]]
+Keeps your code always indented.
+[[https://github.com/Malabarba/aggressive-indent-mode][github]]
 #+BEGIN_SRC emacs-lisp
-  (use-package aggressive-indent
-    :straight t
-    :config
-    (global-aggressive-indent-mode 1)
-    (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  )
+;; (use-package aggressive-indent
+;;   :straight t
+;;   :config
+;;   (global-aggressive-indent-mode 1)
+;;   (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+;; )
 #+END_SRC  
 * Clipboard Copy/Paste
 ** Default
-   Makes killing/yanking interact with the clipboard
+Makes killing/yanking interact with the clipboard
 #+BEGIN_SRC emacs-lisp
-  (setq-default x-select-enable-clipboard t)
+(setq-default x-select-enable-clipboard t)
 #+END_SRC
 ** Simpleclip  
-  Simplified access to sytem clipboard.
+Simplified access to sytem clipboard.
 #+BEGIN_SRC emacs-lisp
-  (use-package simpleclip
-    :straight t
-    :config
-    (simpleclip-mode 1)
-    :bind
-    (("s-c" . simpleclip-copy)
-     ("s-v" . simpleclip-paste)))
+(use-package simpleclip
+  :straight t
+  :config
+  (simpleclip-mode 1)
+  :bind
+  (("s-c" . simpleclip-copy)
+   ("s-v" . simpleclip-paste)))
 #+END_SRC
 
 * Emacs Window Visuals
 ** Disable menu-bar, tool-bar and scroll-bar
 #+BEGIN_SRC emacs-lisp
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 #+END_SRC
 ** Shrink fringes/borders to 1 pixel   
 #+BEGIN_SRC emacs-lisp
