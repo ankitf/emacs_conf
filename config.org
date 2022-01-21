@@ -193,9 +193,22 @@
    Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
 #+BEGIN_SRC emacs-lisp
   (use-package zenburn-theme
-    :straight t
-    :config
-    (load-theme 'zenburn t))
+	:straight t
+	:config
+	(load-theme 'zenburn t))
+#+END_SRC
+** Nord
+   [[https://www.nordtheme.com/docs/ports/emacs][website]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package nord-theme
+  ;;   :straight t
+  ;;   :config
+  ;;   (load-theme 'nord t))
+#+END_SRC
+** Manoj dark
+   [[https://www.nordtheme.com/docs/ports/emacs][website]]
+#+BEGIN_SRC emacs-lisp
+  ;; (load-theme 'manoj-dark)
 #+END_SRC
 
 * Aggressive Indent 
@@ -245,43 +258,6 @@
   (display-time-mode t)
 #+END_SRC
 
-* Python setup
-** Python Virtual environment
-   I have dedicated a virtual environment for emacs related python packages.
-   Make sure to include the requirement.txt of this env to .emacs.d git repo.
-#+BEGIN_SRC emacs-lisp
-  (use-package pyvenv
-    :straight t
-    :config
-    (pyvenv-activate "~/.virtualenvs/emacs-virtualenv"))
-#+END_SRC
-** Elpy
-#+BEGIN_SRC emacs-lisp
-  (use-package elpy
-    :straight t
-    :init
-    :config
-    (setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv/")
-    (elpy-enable))
-#+END_SRC   
-** Jedi
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package jedi
-  ;;   :straight t
-  ;;   :init
-  ;;   (add-hook 'python-mode-hook #'jedi:setup)
-  ;;   :config
-  ;;   (setq jedi:setup-keys t))
-  ;;  ;; (setq jedi:complete-on-dot t)
-#+END_SRC
-** py-autopep8
-#+BEGIN_SRC emacs-lisp
-  (use-package py-autopep8
-    :straight t
-    :init
-    (add-hook 'elpy-mode-hook #'py-autopep8-enable-on-save))
-#+END_SRC      
-
 * Hideshow - Code Folding
   Change the folding levels in the according to the language. 
 #+BEGIN_SRC emacs-lisp
@@ -298,11 +274,12 @@
 * Pomodoro Timer
   Productivity timer. Give undivided attention to a specific task for 25 mins. Take a short break after.
   Timer will start in the emacs status bar.
+  [[https://reposhub.com/python/miscellaneous/SqrtMinusOne-pomm-el.html][Link]]
 #+BEGIN_SRC emacs-lisp
-  (use-package pomodoro
-    :straight t
-    :config
-    (pomodoro-add-to-mode-line))
+(use-package pomm
+  :straight (:host github :repo "SqrtMinusOne/pomm.el")
+  :commands (pomm)
+  :config (pomm-mode-line-mode))
 #+END_SRC 
 
 * Ace window - Emacs window switching
@@ -395,4 +372,50 @@
 
 #+END_SRC
 
+* Python setup
+** Python Virtual environment
+   I have dedicated a virtual environment for emacs related python packages.
+   Make sure to include the requirement.txt of this env to .emacs.d git repo.
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package pyvenv
+  ;;   :straight t
+  ;;   :config
+  ;;   (pyvenv-activate "~/.virtualenvs/emacs-virtualenv"))
+#+END_SRC
+** Elpy
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+	:straight t
+	:init (advice-add 'python-mode :before 'elpy-enable)
+	:hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+	:config
+	(setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
+	(elpy-enable))
+	
+#+END_SRC   
+** Jedi
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package jedi
+  ;;   :straight t
+  ;;   :init
+  ;;   (add-hook 'python-mode-hook 'jedi:setup)
+  ;;   :config
+  ;;   (setq jedi:setup-keys t))
+#+END_SRC
+** py-autopep8
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package py-autopep8
+  ;;   :straight t
+  ;;   :init
+	;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+#+END_SRC      
+** python-black
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package python-black
+  ;; :straight t
+  ;; :demand t
+  ;; :after python
+  ;; :hook (python-mode . python-black-on-save-mode-enable-dwim))
+
+#+END_SRC      
 
