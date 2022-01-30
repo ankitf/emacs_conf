@@ -165,6 +165,8 @@ Nothing better than ido for suggestion in find-file and buffers.
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :straight nil            ;; cloning org mode takes a long time, use inbuilt
+  :config
+  (setq org-src-tab-acts-natively t) ;; indent code in org-babel
   :bind (:map org-mode-map
 			  ("M-h" . nil) ;; Using this for backward-delete-word
 			  )
@@ -453,6 +455,55 @@ Simplified access to sytem clipboard.
   [[https://github.com/org-roam/org-roam][github]] [[https://lucidmanager.org/productivity/taking-notes-with-emacs-org-mode-and-org-roam/][lucidmanager_tutorial]]
   setup org roam in .emacs.d repo for sync. 
 
+* Treemacs
+  [[https://github.com/Alexander-Miller/treemacs][github]]
+  Emacs as an IDE. Easy project navigation, better window views. Lets see. 
+#+begin_src emacs-lisp
+  (use-package treemacs 
+	:straight t
+	:ensure t
+	:defer t
+	:init
+	(with-eval-after-load  'winum
+	  (define-key winun-keymap (kbd "M-o") #'treemacs-select-window))
+	:config (progn
+			  (setq treemacs-expand-after-init  t)
+			  (treemacs-follow-mode t)
+			  (treemacs-fringe-indicator-mode 'always)
+			  (treemacs-filewatch-mode t)
+			  (pcase (cons (not (null (executable-find "git")))
+				 (not (null treemacs-python-executable)))
+				(`(t . t)
+				 (treemacs-git-mode 'deferred))
+				(`(t . _)
+				 (treemacs-git-mode 'simple)))
+			  (treemacs-hide-gitignored-files-mode nil)
+			  )
+	:bind 
+	(:map global-map
+						("M-o"     . treemacs-select-window)
+						("C-c t t" . treemacs))
+	)
+#+end_src
+** Treemacs Projectile
+   #+begin_src emacs-lisp
+	 ;; (use-package treemacs-projectile
+	 ;; 	   :after (treemacs projectile)
+	 ;; )
+   #+end_src
+** Treemacs Magic
+   #+begin_src emacs-lisp
+	 (use-package treemacs-magit
+	   :after (treemacs magit)
+	   )
+   #+end_src
+** Treemacs icons dired
+#+begin_src emacs-lisp
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
 
+#+end_src
+  
 
 
