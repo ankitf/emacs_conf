@@ -1,4 +1,3 @@
-
 * Straight Package Manager 
 ** Bootstrapping straight
 #+BEGIN_SRC emacs-lisp
@@ -52,6 +51,11 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 
 #+END_SRC
 
+* Font Size
+  The value is in 1/10pt, so 100 will give you 10pt, etc.
+#+begin_src emacs-lisp
+(set-face-attribute 'default  nil :height 50)
+#+end_src
 * Minibuffer Completions
 [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
 Have tried Helm. Not happy with buffers all over in the completions.
@@ -160,7 +164,7 @@ Nothing better than ido for suggestion in find-file and buffers.
 * Org mode
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :straight nil             ;; cloning org mode takes a long time.  
+  :straight nil            ;; cloning org mode takes a long time, use inbuilt
   :bind (:map org-mode-map
 			  ("M-h" . nil) ;; Using this for backward-delete-word
 			  )
@@ -192,10 +196,10 @@ Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal
 [[https://github.com/bbatsov/zenburn-emacs][Github]]
 Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package zenburn-theme
-  ;;   :straight t
-  ;;   :config
-  ;;   (load-theme 'zenburn t))
+  (use-package zenburn-theme
+	:straight t
+	:config
+	(load-theme 'zenburn t))
 #+END_SRC
 ** Nord
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
@@ -208,33 +212,34 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 ** Manoj dark
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
-;; (load-theme 'manoj-dark)
+  ;; (load-theme 'manoj-dark)
 #+END_SRC
 ** Doom themes
    [[https://github.com/doomemacs/themes][github]]
 #+begin_src emacs-lisp
-(use-package doom-themes
-    :straight (doom-themes :host github
-					   :repo "doomemacs/themes"
-					   :branch "master")
-    :config 
-	(setq doom-themes-enable-bold t	 ; if nil, bold is universally disabled ;
-	      doom-themes-enable-etalic t)	;
-    (load-theme 'doom-one t)
-	;; corrects (and improved) org-mode's native fontification
-	(doom-themes-org-config)
-)
+  ;;  (use-package doom-themes
+  ;; 	 :straight (doom-themes :host github
+  ;; 						:repo "doomemacs/themes"
+  ;; 						:branch "master")
+  ;; 	 :config 
+  ;; 	 (setq doom-themes-enable-bold t	 ; if nil, bold is universally disabled ;
+  ;; 		   doom-themes-enable-italic t)
+  ;; 	 ;; (load-theme 'doom-one t)
+  ;; 	 (load-theme 'doom-zenburn t)
+  ;; 	 ;; corrects (and improved) org-mode's native fontification
+  ;; 	 (doom-themes-org-config)
+  ;; )
 #+end_src
 * Aggressive Indent 
 Keeps your code always indented.
 [[https://github.com/Malabarba/aggressive-indent-mode][github]]
 #+BEGIN_SRC emacs-lisp
-;; (use-package aggressive-indent
-;;   :straight t
-;;   :config
-;;   (global-aggressive-indent-mode 1)
-;;   (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-;; )
+  (use-package aggressive-indent
+	:straight t
+	:config
+	(global-aggressive-indent-mode 1)
+	(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+   )
 #+END_SRC  
 * Clipboard Copy/Paste
 ** Default
@@ -378,11 +383,11 @@ Simplified access to sytem clipboard.
 * Terminal window 
   Open a terminal window
 #+BEGIN_SRC emacs-lisp
-(defun terminal-window()
-  (interactive)
-  (ansi-term (executable-find "bash")))
+  (defun terminal-window()
+	(interactive)
+	(ansi-term (executable-find "bash")))
 
-(global-set-key (kbd "C-x t") 'terminal-window) 
+  (global-set-key (kbd "C-x t") 'terminal-window) 
 
 #+END_SRC
 
@@ -404,8 +409,8 @@ Simplified access to sytem clipboard.
 	:hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
 	:config
 	(setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
-	(elpy-enable))
-	
+	(elpy-enable)
+)
 #+END_SRC   
 ** Jedi
 #+BEGIN_SRC emacs-lisp
@@ -432,4 +437,22 @@ Simplified access to sytem clipboard.
   ;; :hook (python-mode . python-black-on-save-mode-enable-dwim))
 
 #+END_SRC      
+** sphinx docs
+#+BEGIN_SRC emacs-lisp
+   (use-package sphinx-doc
+	   :straight (sphinx-doc :host github
+							 :repo "naiquevin/sphinx-doc.el"
+							 :branch "master")
+	  :config (add-hook 'python-mode-hook (lambda ()
+	  (sphinx-doc-mode t)))
+	  )
+  (message "sphinx loaded")
+#+END_SRC
+* Org roam
+  Zettelkasten replica in emacs
+  [[https://github.com/org-roam/org-roam][github]] [[https://lucidmanager.org/productivity/taking-notes-with-emacs-org-mode-and-org-roam/][lucidmanager_tutorial]]
+  setup org roam in .emacs.d repo for sync. 
+
+
+
 
