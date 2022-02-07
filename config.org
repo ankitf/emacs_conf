@@ -283,12 +283,24 @@ Simplified access to sytem clipboard.
   Change the folding levels in the according to the language. 
 #+BEGIN_SRC emacs-lisp
   (use-package hideshow
-    :straight t
-    :init
-    (add-hook 'python-mode-hook #'hs-minor-mode)
-    :bind (("C--" . "C-u 2 C-c @ C-l")  ;; Fold everything below level 2, very helpful in python class file.
-	   ;; ("C--" . 'hs-hide-level)
-	   ("C-=" . 'hs-toggle-hiding)))
+	  :straight t
+	  :hook ((prog-mode . 'hs-minor-mode))
+	  :config 
+	  (defun toggle-fold ()
+		(interactive)
+		(save-excursion
+		  (end-of-line)
+		  (hs-toggle-hiding)
+  ))
+
+	  :bind (;;("C--" . '(kbd "C-u 2 C-c @ C-l"))  ;; Fold everything below level 2, very helpful in python class file.
+		 ("C--" . 'hs-hide-level)
+		 ("C-=" . 'hs-toggle-hiding)
+		 ;;("C-=" . 'toggle-fold)
+		 )
+	  )
+
+
 
 #+END_SRC   
 
@@ -491,10 +503,11 @@ Simplified access to sytem clipboard.
 	 ;; 	   :after (treemacs projectile)
 	 ;; )
    #+end_src
-** Treemacs Magic
+** Treemacs Magit
    #+begin_src emacs-lisp
 	 (use-package treemacs-magit
 	   :after (treemacs magit)
+	   :ensure t
 	   )
    #+end_src
 ** Treemacs icons dired
