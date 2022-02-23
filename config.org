@@ -51,6 +51,15 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 
 #+END_SRC
 
+* Movement 
+  Change forward-word and backword-word to better implementation.
+#+begin_src emacs-lisp
+  ;; (subword-mode +1)
+  ;; ;
+										  ; (setq syntax-subword-skip-spaces t)
+#+end_src
+
+
 * Font Size
   The value is in 1/10pt, so 100 will give you 10pt, etc.
 #+begin_src emacs-lisp
@@ -247,18 +256,21 @@ Keeps your code always indented.
 ** Default
 Makes killing/yanking interact with the clipboard
 #+BEGIN_SRC emacs-lisp
-(setq-default x-select-enable-clipboard t)
+  (setq-default x-select-enable-clipboard t)
+  (setq select-enable-primary nil)
+  (setq select-enable-clipboard t)
+  (delete-selection-mode)
 #+END_SRC
 ** Simpleclip  
 Simplified access to sytem clipboard.
 #+BEGIN_SRC emacs-lisp
-(use-package simpleclip
-  :straight t
-  :config
-  (simpleclip-mode 1)
-  :bind
-  (("s-c" . simpleclip-copy)
-   ("s-v" . simpleclip-paste)))
+  ;; (use-package simpleclip
+  ;;   :straight t
+  ;;   :config
+  ;;   (simpleclip-mode 1)
+  ;;   :bind
+  ;;   (("s-c" . simpleclip-copy)
+  ;;    ("s-v" . simpleclip-paste)))
 #+END_SRC
 
 * Emacs Window Visuals
@@ -282,9 +294,11 @@ Simplified access to sytem clipboard.
 * Hideshow - Code Folding
   Change the folding levels in the according to the language. 
 #+BEGIN_SRC emacs-lisp
-  (use-package hideshow
+	(use-package hideshow
 	  :straight t
-	  :hook ((prog-mode . 'hs-minor-mode))
+	  :init
+	  (add-hook 'python-mode-hook #'hs-minor-mode)
+
 	  :config 
 	  (defun toggle-fold ()
 		(interactive)
