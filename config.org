@@ -532,5 +532,46 @@ Simplified access to sytem clipboard.
 
 #+end_src
   
+* GTD 
+  Getting things done 
+  inbox - capture tasks, while reviewing, refile the task to corresponding file, project
+  personal - personal projects tracking
+  vyn - projects related to vyntelligence, humanlearning pvt ltd
+  tickler - add task with timestamp to get reminded at the right moment, it would
+  be easier if able to integrate google calender with this
+#+begin_src emacs-lisp
+(setq org-agenda-files '("~/ankit/emacs/gtd/inbox.org"
+                         "~/ankit/emacs/gtd/personal.org"
+                         "~/ankit/emacs/gtd/vyn.org"
+                         "~/ankit/emacs/gtd/tickler.org"))
+(setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "|" "DONE(d)" "CANCELLED" "WAITING")))
 
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-capture-templates
+      '(("t" "Todo [inbox]" entry (file+headline "~/ankit/emacs/gtd/inbox.org" "Tasks")
+         "* TODO %?\n  %i\n")
+        ("T" "Tickler" entry
+         (file+headline "~/ankit/emacs/gtd/tickler.org" "Tickler")
+         "* %i% \n %U")))
 
+(setq org-refile-targets '(("~/ankit/emacs/gtd/personal.org" :maxlevel . 1)
+                           ("~/ankit/emacs/gtd/vyn.org" :level . 1)
+                          ("~/ankit/emacs/gtd/tickler.org" :maxlevel . 2)))
+
+#+end_src
+* Markdown mode
+  Major mode for editing markdown formatted text.
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+	:straight t
+	:mode ("README\\.md\\'" . gfm-mode)
+	:init (setq markdown-command "multimarkdown"))
+  ;; grip to preview in github on localhost.
+
+;; A GitHub username for API authentication
+(setq grip-github-user "grip-github-user")
+
+;; A GitHub password or auth token for API auth
+(setq grip-github-password "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")
+
+#+end_src
