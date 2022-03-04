@@ -568,10 +568,6 @@ Simplified access to sytem clipboard.
 	:init (setq markdown-command "multimarkdown"))
   ;; grip to preview in github on localhost.
 
-;; A GitHub username for API authentication
-(setq grip-github-user "grip-github-user")
 
-;; A GitHub password or auth token for API auth
-(setq grip-github-password "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")
 
 #+end_src
