@@ -476,6 +476,23 @@ Simplified access to sytem clipboard.
 	  )
   (message "sphinx loaded")
 #+END_SRC
+
+* Emacs Ipython Notebook EIN
+  Jypyter notebook client for emacs. 
+#+begin_src emacs-lisp
+  (use-package ein
+	:straight t
+	:config 
+	(setq ein:output-area-inlined-images t)
+	)
+  ;; load org-babel for ein
+  (org-babel-do-load-languages 'org-babel-load-languages
+							   (append org-babel-load-languages
+									   '((python . t)
+										 (ein . t))))
+
+
+#+end_src
 * Org roam
   Zettelkasten replica in emacs
   [[https://github.com/org-roam/org-roam][github]] [[https://lucidmanager.org/productivity/taking-notes-with-emacs-org-mode-and-org-roam/][lucidmanager_tutorial]]
