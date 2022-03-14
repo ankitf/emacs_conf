@@ -496,7 +496,26 @@ Simplified access to sytem clipboard.
 * Org roam
   Zettelkasten replica in emacs
   [[https://github.com/org-roam/org-roam][github]] [[https://lucidmanager.org/productivity/taking-notes-with-emacs-org-mode-and-org-roam/][lucidmanager_tutorial]]
-  setup org roam in .emacs.d repo for sync. 
+  setup org roam repo as a submodule in .emacs.d repo for sync. 
+#+begin_src emacs-lisp
+  (use-package org-roam
+	:straight t
+	:custom
+	(org-roam-directory (file-truename "/home/ankit/ankit/emacs/roam"))
+	:bind (("C-c n l" . org-roam-buffer-toggle)
+		   ("C-c n f" . org-roam-node-find)
+		   ("C-c n g" . org-roam-graph)
+		   ("C-c n i" . org-roam-node-insert)
+		   ("C-c n c" . org-roam-capture)
+		   ;; Dailies
+		   ("C-c n d" . org-roam-dailies-capture-today))
+	:config
+	;; If you're using a vertical completion framework, you might want a more informative completion interface
+	(org-roam-db-autosync-mode)
+	;; If using org-roam-protocol
+	;; (require 'org-roam-protocol)
+	)
+#+end_src
 
 * Treemacs
   [[https://github.com/Alexander-Miller/treemacs][github]]
