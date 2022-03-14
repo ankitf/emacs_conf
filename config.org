@@ -172,14 +172,14 @@ Nothing better than ido for suggestion in find-file and buffers.
 
 * Org mode
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :straight nil            ;; cloning org mode takes a long time, use inbuilt
-  :config
-  (setq org-src-tab-acts-natively t) ;; indent code in org-babel
-  :bind (:map org-mode-map
-			  ("M-h" . nil) ;; Using this for backward-delete-word
-			  )
-  )
+  (use-package org
+	:straight (:type built-in)            ;; using inbuilt org.
+	:config
+	(setq org-src-tab-acts-natively t) ;; indent code in org-babel
+	:bind (:map org-mode-map
+				("M-h" . nil) ;; Using this for backward-delete-word
+				)
+	)
 
 #+END_SRC
 * Org Bullets
