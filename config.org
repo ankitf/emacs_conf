@@ -171,11 +171,15 @@ Nothing better than ido for suggestion in find-file and buffers.
 #+END_SRC
 
 * Org mode
+  emacs version: 27.2
+  org-mode version: 9.4.4 (inbuilt)
 #+BEGIN_SRC emacs-lisp
   (use-package org
 	:straight (:type built-in)            ;; using inbuilt org.
+	;;:straight t    ;; loading external org causes some issues in the org-capture
 	:config
 	(setq org-src-tab-acts-natively t) ;; indent code in org-babel
+  	(setq org-startup-folded t) ;; fold org files on startup.
 	:bind (:map org-mode-map
 				("M-h" . nil) ;; Using this for backward-delete-word
 				)
