@@ -1,3 +1,4 @@
+#+TODO: DISABLED
 * Straight Package Manager 
 ** Bootstrapping straight
 #+BEGIN_SRC emacs-lisp
@@ -51,7 +52,7 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 
 #+END_SRC
 
-* Movement 
+* DISABLED Movement 
   Change forward-word and backword-word to better implementation.
 #+begin_src emacs-lisp
   ;; (subword-mode +1)
@@ -59,17 +60,16 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 										  ; (setq syntax-subword-skip-spaces t)
 #+end_src
 
-
 * Font Size
   The value is in 1/10pt, so 100 will give you 10pt, etc.
 #+begin_src emacs-lisp
-(set-face-attribute 'default  nil :height 50)
+(set-face-attribute 'default  nil :height 90)
 #+end_src
 * Minibuffer Completions
 [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
 Have tried Helm. Not happy with buffers all over in the completions.
 Will be trying vertico, orderless, emarbark  and marginilia. 
-** Helm
+** DISABLED Helm
 Completions in the minibuffer
 #+BEGIN_SRC emacs-lisp
 ;; (use-package helm 
@@ -148,7 +148,7 @@ Persists history over emacs restarts. Vertico sorts by history position.
   (savehist-mode)
   )
 #+END_SRC
-** Ido mode
+** DISABLED Ido mode
 Nothing better than ido for suggestion in find-file and buffers.
 #+BEGIN_SRC emacs-lisp
 ;; (use-package ido
@@ -158,7 +158,7 @@ Nothing better than ido for suggestion in find-file and buffers.
 ;;   (ido-mode t)
 ;;   )
 #+END_SRC
-** Ido-vertical mode
+** DISABLED Ido-vertical mode
 Nothing better than ido for suggestion in find-file and buffers.
 #+BEGIN_SRC emacs-lisp
 ;; (use-package ido-vertical-mode
@@ -195,7 +195,7 @@ Nothing better than ido for suggestion in find-file and buffers.
 #+END_SRC
 
 * Emacs themes
-** Tango-dark theme
+** DISABLED Tango-dark theme
 Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
 #+BEGIN_SRC emacs-lisp
 ;; (use-package tango-dark-theme
@@ -216,7 +216,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 	:config
 	(load-theme 'zenburn t))
 #+END_SRC
-** Nord
+** DISABLED Nord
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
 ;; (use-package nord-theme
@@ -224,12 +224,12 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 ;;   :config
 ;;   (load-theme 'nord t))
 #+END_SRC
-** Manoj dark
+** DISABLED Manoj dark
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
   ;; (load-theme 'manoj-dark)
 #+END_SRC
-** Doom themes
+** DISABLED Doom themes
    [[https://github.com/doomemacs/themes][github]]
 #+begin_src emacs-lisp
   ;;  (use-package doom-themes
@@ -265,7 +265,7 @@ Makes killing/yanking interact with the clipboard
   (setq select-enable-clipboard t)
   (delete-selection-mode)
 #+END_SRC
-** Simpleclip  
+** DISABLED Simpleclip  
 Simplified access to sytem clipboard.
 #+BEGIN_SRC emacs-lisp
   ;; (use-package simpleclip
@@ -349,14 +349,14 @@ Simplified access to sytem clipboard.
     :config
     (mood-line-mode))
 #+END_SRC 
-** Minions
+** DISABLED Minions
 #+BEGIN_SRC emacs-lisp
   ;; (use-package minions
     ;; :straight t
     ;; :config
     ;; (minions-mode 1))
 #+END_SRC
-** Doom modeline
+** DISABLED Doom modeline
    [[https://github.com/seagle0128/doom-modeline][github]]
 #+BEGIN_SRC emacs-lisp
   ;; (use-package doom-modeline
@@ -364,7 +364,7 @@ Simplified access to sytem clipboard.
   ;;   :init
   ;;   (doom-modeline-mode 1))
 #+END_SRC   
-** Telephone line
+** DISABLED Telephone line
    [[https://github.com/dbordak/telephone-line][github]]
 #+BEGIN_SRC emacs-lisp
   ;; (use-package telephone-line
@@ -372,7 +372,7 @@ Simplified access to sytem clipboard.
     ;; :init
     ;; (telephone-line-mode 1))
 #+END_SRC      
-   
+
 * Magit - Git Interface of Emacs
   Magit is *magic*. 
 #+BEGIN_SRC emacs-lisp
@@ -608,6 +608,15 @@ Simplified access to sytem clipboard.
 	:init (setq markdown-command "multimarkdown"))
   ;; grip to preview in github on localhost.
 
+#+end_src
 
-
+* DISABLED Disabled - Dirvish - Improved Dired.
+  Model file manager. now working as of now with below error.
+  ;; cannot open load file: No such file or directory, dirvish-media
+ 
+#+begin_src emacs-lisp
+  ;; (use-package dirvish
+  ;;   :init
+  ;;   (dirvish-override-dired-mode)
+  ;; )
 #+end_src
