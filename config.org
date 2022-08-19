@@ -399,13 +399,13 @@ Simplified access to sytem clipboard.
 * Projectile - Project Interaction Library
   Prequisite - Install "the_silver_searcher_ag" and "fd" on arch linux. Install ag in emacs.
 #+BEGIN_SRC emacs-lisp
-   (use-package projectile
-     :straight t
-     :config
-     (projectile-mode +1)
-     (projectile-global-mode +1)
-     :bind-keymap ("C-c p" . projectile-command-map)
-     )
+  ;; (use-package projectile
+  ;;   :straight t
+  ;;   :config
+  ;;   (projectile-mode +1)
+  ;;   (projectile-global-mode +1)
+  ;;   :bind-keymap ("C-c p" . projectile-command-map)
+  ;;   )
 #+END_SRC
 
 * Github Markdown
@@ -445,14 +445,14 @@ Simplified access to sytem clipboard.
 #+END_SRC
 ** Elpy
 #+BEGIN_SRC emacs-lisp
-	(use-package elpy
-	  :straight t
-	  :init (advice-add 'python-mode :before 'elpy-enable)
-	  ;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
-	  :config
-	  (setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
-	  (elpy-enable)
-  )
+   ;;  (use-package elpy
+  ;; 	:straight t
+  ;; 	:init (advice-add 'python-mode :before 'elpy-enable)
+  ;; 	;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+  ;; 	:config
+  ;; 	(setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
+  ;; 	(elpy-enable)
+  ;; )
 #+END_SRC   
 ** Jedi
 #+BEGIN_SRC emacs-lisp
@@ -624,13 +624,29 @@ Simplified access to sytem clipboard.
 
 #+end_src
 
-* DISABLED Disabled - Dirvish - Improved Dired.
-  Model file manager. now working as of now with below error.
-  ;; cannot open load file: No such file or directory, dirvish-media
+* Dirvish - Improved Dired.
+Model file manager. now working as of now with below error.
  
 #+begin_src emacs-lisp
-  ;; (use-package dirvish
-  ;;   :init
-  ;;   (dirvish-override-dired-mode)
-  ;; )
+  (use-package dirvish
+    :init
+    (dirvish-override-dired-mode)
+    )
 #+end_src
+
+* LSP mode.
+IDE like experience in emacs
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :init
+    (setq lsp-keymap-prefix "C-c l")
+    :hook ((python-mode . lsp)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp
+    )
+
+#+end_src
+
+
+  
+
