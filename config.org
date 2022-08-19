@@ -63,8 +63,9 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 * Font Size
   The value is in 1/10pt, so 100 will give you 10pt, etc.
 #+begin_src emacs-lisp
-(set-face-attribute 'default  nil :height 90)
+(set-face-attribute 'default  nil :height 75)
 #+end_src
+
 * Minibuffer Completions
 [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
 Have tried Helm. Not happy with buffers all over in the completions.
@@ -179,13 +180,16 @@ Nothing better than ido for suggestion in find-file and buffers.
 	;;:straight t    ;; loading external org causes some issues in the org-capture
 	:config
 	(setq org-src-tab-acts-natively t) ;; indent code in org-babel
-  	(setq org-startup-folded t) ;; fold org files on startup.
+	(setq org-startup-folded t) ;; fold org files on startup.
 	:bind (:map org-mode-map
 				("M-h" . nil) ;; Using this for backward-delete-word
 				)
 	)
+;; no of empty line when collapsing the trees
+(setq org-cycle-separator-lines 1)
 
 #+END_SRC
+
 * Org Bullets
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
@@ -245,6 +249,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
   ;; 	 (doom-themes-org-config)
   ;; )
 #+end_src
+
 * Aggressive Indent 
 Keeps your code always indented.
 [[https://github.com/Malabarba/aggressive-indent-mode][github]]
@@ -255,7 +260,8 @@ Keeps your code always indented.
 	(global-aggressive-indent-mode 1)
 	(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
    )
-#+END_SRC  
+#+END_SRC
+
 * Clipboard Copy/Paste
 ** Default
 Makes killing/yanking interact with the clipboard
@@ -380,6 +386,7 @@ Simplified access to sytem clipboard.
     :straight t
     )
 #+END_SRC
+
 * Silver Searcher Ag 
   Mostly suggested by projectile
 
@@ -399,7 +406,8 @@ Simplified access to sytem clipboard.
      (projectile-global-mode +1)
      :bind-keymap ("C-c p" . projectile-command-map)
      )
-#+END_SRC 
+#+END_SRC
+
 * Github Markdown
   Preview github markdown to edit readme.rd files.
 #+BEGIN_SRC emacs-lisp
@@ -408,10 +416,12 @@ Simplified access to sytem clipboard.
     :bind (("C-c g" . grip-mode))
   )
 #+END_SRC
+
 * Tab width
 #+BEGIN_SRC emacs-lisp
 (setq-default tab-width 4)
 #+END_SRC
+
 * Terminal window 
   Open a terminal window
 #+BEGIN_SRC emacs-lisp
@@ -435,14 +445,14 @@ Simplified access to sytem clipboard.
 #+END_SRC
 ** Elpy
 #+BEGIN_SRC emacs-lisp
-  (use-package elpy
-	:straight t
-	:init (advice-add 'python-mode :before 'elpy-enable)
-	:hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
-	:config
-	(setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
-	(elpy-enable)
-)
+	(use-package elpy
+	  :straight t
+	  :init (advice-add 'python-mode :before 'elpy-enable)
+	  ;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+	  :config
+	  (setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
+	  (elpy-enable)
+  )
 #+END_SRC   
 ** Jedi
 #+BEGIN_SRC emacs-lisp
@@ -484,19 +494,20 @@ Simplified access to sytem clipboard.
 * Emacs Ipython Notebook EIN
   Jypyter notebook client for emacs. 
 #+begin_src emacs-lisp
-  (use-package ein
-	:straight t
-	:config 
-	(setq ein:output-area-inlined-images t)
-	)
+  ;; (use-package ein
+  ;;   :straight t
+  ;;   :config 
+  ;;   (setq ein:output-area-inlined-images t)
+	;; )
   ;; load org-babel for ein
-  (org-babel-do-load-languages 'org-babel-load-languages
-							   (append org-babel-load-languages
-									   '((python . t)
-										 (ein . t))))
+  ;; (org-babel-do-load-languages 'org-babel-load-languages
+							   ;; (append org-babel-load-languages
+									   ;; '((python . t)
+										 ;; (ein . t))))
 
 
 #+end_src
+
 * Org roam
   Zettelkasten replica in emacs
   [[https://github.com/org-roam/org-roam][github]] [[https://lucidmanager.org/productivity/taking-notes-with-emacs-org-mode-and-org-roam/][lucidmanager_tutorial]]
@@ -511,6 +522,7 @@ Simplified access to sytem clipboard.
 		   ("C-c n g" . org-roam-graph)
 		   ("C-c n i" . org-roam-node-insert)
 		   ("C-c n c" . org-roam-capture)
+		   ("C-c n h" . org-id-get-create)
 		   ;; Dailies
 		   ("C-c n d" . org-roam-dailies-capture-today))
 	:config
@@ -587,6 +599,7 @@ Simplified access to sytem clipboard.
 (setq org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "|" "DONE(d)" "CANCELLED" "WAITING")))
 
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-capture-templates
       '(("t" "Todo [inbox]" entry (file+headline "~/ankit/emacs/gtd/inbox.org" "Tasks")
          "* TODO %?\n  %i\n")
@@ -599,6 +612,7 @@ Simplified access to sytem clipboard.
                           ("~/ankit/emacs/gtd/tickler.org" :maxlevel . 2)))
 
 #+end_src
+
 * Markdown mode
   Major mode for editing markdown formatted text.
 #+begin_src emacs-lisp
