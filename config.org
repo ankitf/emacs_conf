@@ -66,6 +66,15 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 (set-face-attribute 'default  nil :height 75)
 #+end_src
 
+* Which key
+Displays the key bindings following your currently entered incomplete command
+#+begin_src emacs-lisp
+  (use-package which-key
+	:init
+	(which-key-mode 1)
+	)
+#+end_src
+
 * Minibuffer Completions
 [[https://www.reddit.com/r/emacs/comments/rbr2x5/completions_in_mini_buffer/][Reddit Discusssion]]
 Have tried Helm. Not happy with buffers all over in the completions.
