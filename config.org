@@ -443,16 +443,25 @@ Simplified access to sytem clipboard.
 #+END_SRC
 
 * Python setup
+** Python
+#+begin_src emacs-lisp
+  (use-package python-mode
+	:ensure nil
+	:custom
+	(python-shell-interpreter "python3")
+	)
+#+end_src
 ** Python Virtual environment
    I have dedicated a virtual environment for emacs related python packages.
    Make sure to include the requirement.txt of this env to .emacs.d git repo.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package pyvenv
-  ;;   :straight t
-  ;;   :config
-  ;;   (pyvenv-activate "~/.virtualenvs/emacs-virtualenv"))
+  (use-package pyvenv
+    :straight t
+    ;; :config
+  ;;   (pyvenv-activate "~/.virtualenvs/emacs-virtualenv")
+    )
 #+END_SRC
-** Elpy
+** DISABLED Elpy
 #+BEGIN_SRC emacs-lisp
    ;;  (use-package elpy
   ;; 	:straight t
@@ -463,7 +472,7 @@ Simplified access to sytem clipboard.
   ;; 	(elpy-enable)
   ;; )
 #+END_SRC   
-** Jedi
+** DISABLED Jedi
 #+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   :straight t
@@ -472,14 +481,14 @@ Simplified access to sytem clipboard.
   ;;   :config
   ;;   (setq jedi:setup-keys t))
 #+END_SRC
-** py-autopep8
+** DISABLED py-autopep8
 #+BEGIN_SRC emacs-lisp
   ;; (use-package py-autopep8
   ;;   :straight t
   ;;   :init
 	;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 #+END_SRC      
-** python-black
+** DISABLED python-black
 #+BEGIN_SRC emacs-lisp
   ;; (use-package python-black
   ;; :straight t
@@ -587,9 +596,9 @@ Simplified access to sytem clipboard.
    #+end_src
 ** Treemacs icons dired
 #+begin_src emacs-lisp
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
+  ;; (use-package treemacs-icons-dired
+  ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
+  ;;   :ensure t)
 
 #+end_src
   
@@ -645,16 +654,20 @@ Model file manager. now working as of now with below error.
 
 * LSP mode.
 IDE like experience in emacs
+
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :init
-    (setq lsp-keymap-prefix "C-c l")
-    :hook ((python-mode . lsp)
-           (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp
-    )
+	:straight nil
+	:init
+	(setq lsp-keymap-prefix "C-c l")
+	:hook ((python-mode . lsp)
+		   (lsp-mode . lsp-enable-which-key-integration))
+	:commands lsp
+	)
 
 #+end_src
+
+
 
 
   
