@@ -1,4 +1,4 @@
-#+TODO: DISABLED
+#+TODO: DISABLED(d) TODO(t) 
 * Straight Package Manager 
 ** Bootstrapping straight
 #+BEGIN_SRC emacs-lisp
@@ -63,7 +63,7 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 * Font Size
   The value is in 1/10pt, so 100 will give you 10pt, etc.
 #+begin_src emacs-lisp
-(set-face-attribute 'default  nil :height 47)
+(set-face-attribute 'default  nil :height 70)
 #+end_src
 
 * Which key
@@ -190,7 +190,7 @@ org-mode version: 9.4.4 (inbuilt)
 	  :config
 	  (setq org-src-tab-acts-natively t) ;; indent code in org-babel
 	  (setq org-startup-folded t) ;; fold org files on startup.
-	  (setq org-indent-mode t) ;; indentation in org files
+	  ;; (setq org-indent-mode t) ;; indentation in org files
 	  :bind (:map org-mode-map
 				  ("M-h" . nil) ;; Using this for backward-delete-word
 				  )
@@ -208,20 +208,44 @@ org-mode version: 9.4.4 (inbuilt)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+* Org babel
+#+begin_src emacs-lisp
+  ;; prerequisite -  python interpreter path
+  ;; (setq python-shell-interpreter "/usr/bin/python3")
+
+
+  (org-babel-do-load-languages 'org-babel-load-languages
+							   '(
+								 (python . t)
+								 ;; (sh . t)
+								 ;; (shell . t)
+								 ))
+  ;; python
+  (setq org-babel-python-command "python3")
+
+  ;; Syntax highlight in block
+  (setq org-src-fontify-natively t)
+  ;; dont prompt before running code in org
+  (setq org-confirm-babel-evaluate nil)
+  ;; Fix an incompatibility between ob-sync and ob-ipython-packages
+  ;; (setq ob-async-no-async-languages-alist '("ipython"))
+
+#+end_src
+
 * Emacs themes
 ** DISABLED Tango-dark theme
 Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal repo, copied the .el file and cloned it.
 #+BEGIN_SRC emacs-lisp
-;; (use-package tango-dark-theme
-;;    :straight (tango-dark-theme
-;; 	      :host github 
-;; 	      :repo "ankitf/tango-dark-theme"
-;; 	      :branch "main")
-;; :defer t
-;; :config (load-theme 'tango-dark))
+  ;; (use-package tango-dark-theme
+  ;;    :straight (tango-dark-theme
+  ;;           :host github 
+  ;;           :repo "ankitf/tango-dark-theme"
+  ;;           :branch "main")
+  ;; :defer t
+  ;; :config (load-theme 'tango-dark))
 
 #+END_SRC
-** Zenburn
+** DISABLED Zenburn
 [[https://github.com/bbatsov/zenburn-emacs][Github]]
 Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
 #+BEGIN_SRC emacs-lisp
@@ -233,10 +257,10 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 ** DISABLED Nord
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
-;; (use-package nord-theme
-;;   :straight t
-;;   :config
-;;   (load-theme 'nord t))
+  ;; (use-package nord-theme
+  ;;   :straight t
+  ;;   :config
+  ;;   (load-theme 'nord t))
 #+END_SRC
 ** DISABLED Manoj dark
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
@@ -259,17 +283,24 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
   ;; 	 (doom-themes-org-config)
   ;; )
 #+end_src
+** DISABLED Moe theme
+#+begin_src emacs-lisp
+  ;; (use-package moe-theme
+	;; :straight t
+	;; :config
+	;; (load-theme 'moe-dark t))
+#+end_src
 
 * DISABLED Aggressive Indent 
 Keeps your code always indented.
 [[https://github.com/Malabarba/aggressive-indent-mode][github]]
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package aggressive-indent
-  ;;   :straight t
-  ;;   :config
-  ;;   (global-aggressive-indent-mode 1)
-  ;;   (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  ;;  )
+  (use-package aggressive-indent
+	:straight t
+	:config
+	;; (global-aggressive-indent-mode 1)
+	(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+   )
 #+END_SRC
 
 * Clipboard Copy/Paste
@@ -409,13 +440,13 @@ Simplified access to sytem clipboard.
 * Projectile - Project Interaction Library
   Prequisite - Install "the_silver_searcher_ag" and "fd" on arch linux. Install ag in emacs.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package projectile
-  ;;   :straight t
-  ;;   :config
-  ;;   (projectile-mode +1)
-  ;;   (projectile-global-mode +1)
-  ;;   :bind-keymap ("C-c p" . projectile-command-map)
-  ;;   )
+  (use-package projectile
+    :straight t
+    :config
+    (projectile-mode +1)
+    (projectile-global-mode +1)
+    :bind-keymap ("C-c p" . projectile-command-map)
+    )
 #+END_SRC
 
 * Github Markdown
@@ -443,14 +474,35 @@ Simplified access to sytem clipboard.
 
 #+END_SRC
 
-* Python setup
-** DISABLED Python
+* Flycheck
 #+begin_src emacs-lisp
-  ;; (use-package python-mode
-  ;;   :ensure nil
-  ;;   :custom
-	;; (python-shell-interpreter "python3")
+  ;; (use-package flycheck
+  ;;   :straight t
+  ;;   :ensure t
+  ;;   :init (global-flycheck-mode)
+	;; :custom
+	;; (flycheck-check-syntax-automaticaly '(save model-enabled))
+	;; :bind
+	;; ( :map errors
+	;; 	("n" . flycheck-next-error)
+	;; 	("p" . flycheck-previous-error)
+	;; 	("l" . flycheck-list-errors)
+	;; 	("v" . flycheck-verify-setup))
 	;; )
+#+end_src
+
+* Python setup
+** Python
+#+begin_src emacs-lisp
+  (use-package python-mode
+	:ensure nil
+	:custom
+	(when (and (executable-find "python3")
+			 (string= python-shell-interpreter "python"))
+	(setq python-shell-interpreter "python3"))
+	(py-underscore-word-syntax-p-off)
+	;; (python-shell-interpreter "python3")
+	)
 #+end_src
 ** Python Virtual environment
    I have dedicated a virtual environment for emacs related python packages.
@@ -460,18 +512,20 @@ Simplified access to sytem clipboard.
 	:straight t
 	:config
 	;; (pyvenv-activate "~/.virtualenvs/emacs-virtualenv")
+	(setenv "WORKON_HOME" "~/virtualenvs")
+	(setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] ")))
+	(pyvenv-mode t)
 	)
 #+END_SRC
-** Elpy
+** DISABLED Elpy
 #+BEGIN_SRC emacs-lisp
-  (use-package elpy
-	:straight t
-	:init (advice-add 'python-mode :before 'elpy-enable)
-	;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
-	:config
-	(setq elpy-rpc-virtualenv-path "~/.virtualenvs/emacs_virtualenv")
-	(elpy-enable)
-	)
+  ;; (use-package elpy
+  ;;   :straight t
+  ;;   :init (advice-add 'python-mode :before 'elpy-enable)
+  ;;   ;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+  ;;   :config
+  ;;   (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
+  ;;   (elpy-enable))
 #+END_SRC   
 ** DISABLED Jedi
 #+BEGIN_SRC emacs-lisp
@@ -551,6 +605,19 @@ Simplified access to sytem clipboard.
 	;; (require 'org-roam-protocol)
 	)
 #+end_src
+** Org roam ui
+Graphical frontend for org roam zettelkasten
+#+begin_src emacs-lisp
+    (use-package org-roam-ui
+      :straight (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+      :after org-roam
+      :config
+      (setq org-roam-ui-sync-theme t
+            org-roam-ui-follow t
+            org-roam-ui-update-on-save t
+            org-oram-ui-open-on-start t)
+      )
+#+end_src
 
 * Treemacs
   [[https://github.com/Alexander-Miller/treemacs][github]]
@@ -586,11 +653,11 @@ Simplified access to sytem clipboard.
 	)
 #+end_src
 ** Treemacs Projectile
-   #+begin_src emacs-lisp
-	 ;; (use-package treemacs-projectile
-	 ;; 	   :after (treemacs projectile)
-	 ;; )
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package treemacs-projectile
+         :after (treemacs projectile)
+   )
+ #+end_src
 ** Treemacs Magit
    #+begin_src emacs-lisp
 	 (use-package treemacs-magit
@@ -656,41 +723,125 @@ Model file manager. now working as of now with below error.
     )
 #+end_src
 
-* DISABLED LSP mode.
-IDE like experience in emacs
+* Company
+Code and text completion
+#+begin_src emacs-lisp
+  (use-package company
+	:straight t
+	:ensure t
+	:defer t
+	:custom
+	(company-idle-delay 0.1)
+	(company-minimum-prefix-lenght 1)
+	(company-tooltip-align-annotations t)
+	(company-dabbrev-downcase nil)
+	(company-dabbrev-other-buffers t) ;; search buffers with same major mode
+	(company-dabbrev-ignore-case t)
+	(company-global-modes '(not eshell-mode shell-mode))
+	:hook ((text-mode . company-mode)
+		   (prog-mode . company-mode))
+	(dashboard-after-initialize . global-company-mode)
+	)
+#+end_src
+
+* TODO Prescient
+
+* TODO Mwin - Move where I Mean
+
+* TODO Yasnippet
+
+* LSP mode.
+IDE like experience in emacs with debugger support.
 
 #+begin_src emacs-lisp
-  ;; (use-package lsp-mode
-  ;;    :straight nil
-  ;;    :init
-  ;;    (setq lsp-keymap-prefix "C-c l")
-  ;;    :hook ((python-mode . lsp)			
-  ;; 		  (lsp-mode . lsp-enable-which-key-integration))
-  ;;    :commands lsp
-  ;;    :config
-  ;;    (setq lsp-enable-symbol-highlighting t)
-  ;;    ;; (setq lsp-lens-enable t)
-  ;;    (setq lsp-headerline-breadcrumb-enable nil)
-  ;;    (setq lsp-completion-provider 'company-mode)
-  ;;    (setq lsp-modeline-diagnostic-enable t)
-  ;;    )
-
-  ;; ;; lsp ui
+  (use-package lsp-mode
+	 :straight t
+	 :init
+	 (setq lsp-keymap-prefix "C-c l")
+	 :hook ((python-mode . lsp-deferred)			
+			(lsp-mode . lsp-enable-which-key-integration))
+	 :commands (lsp lsp-deferred)
+	 :config
+	 (setq lsp-auto-configure t)
+	 (setq lsp-pylsp-plugins-flake8-enabled t)
+	 (setq lsp-pylsp-plugins-yapf-enabled t)
+	 (setq lsp-enable-symbol-highlighting t)
+	 (setq lsp-lens-enable t)
+	 (setq lsp-headerline-breadcrumb-enable t)
+	 (setq lsp-completion-enable t)
+	 (setq lsp-modeline-diagnostic-enable t)
+	 (setq lsp-enable-snippet t)
+	 (setq lsp-completion-provider :capf)
+	 )
+  ;;  putting clients subdir to load_path as mentioned in lsp installation page.
+  ;; (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
+  ;; (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
+#+end_src
+** LSP UI
+#+begin_src emacs-lisp
   ;; (use-package lsp-ui
-  ;;   :init
-  ;;   (setq lsp-ui-sideline-show-hover t)
-  ;;   (setq lsp-ui-sideline-show-diagnostic t)
-  ;;   (setq lsp-ui-sideline-show-hover t)
-  ;;   ;; (setq lsp-ui-sideline-enable t)
-  ;;   (setq lsp-ui-diagnostic-provider 'flycheck)
-  ;;   (setq lsp-ui-doc-enable t)
+  ;;   :after lsp-mode
   ;;   :commands lsp-ui-mode
-  ;; )
+  ;;   :hook (lsp-mode . lsp-ui-mode)
+	;; :custom
+	;; (lsp-ui-doc-show-with-cursor nil)
+	;; (lsp-ui-doc-show-with-mouse nil)
+	;; (lsp-ui-doc-postion 'at-point)
+	;; (lsp-ui-sideline-delay 0.5)
+	;; (lsp-ui-peek-always-show t)
 
+	;; ;; (setq lsp-ui-sideline-show-hover t)
+	;; (setq lsp-ui-sideline-show-diagnostic t)
+	;; (setq lsp-ui-sideline-enable t)
+	;; (setq lsp-ui-diagnostic-provider 'flycheck)
+	;; (setq lsp-ui-doc-enable t)
+	;; )
+
+  (use-package lsp-ui
+	:commands lsp-ui-mode
+	:config
+	(setq lsp-ui-flycheck-enable t)
+	)
+#+end_src
+** LSP pyright
+#+begin_src emacs-lisp
+  ;; (use-package lsp-pyright
+  ;; :ensure t
+  ;; :hook (python-mode . (lambda ()
+  ;; 					   (require 'lsp-pyright)
+  ;; 					   (lsp-deferred))))  ; or lsp-deferred
+  ;; :config
+  ;; (setq lsp-pyright-venv-directory "/home/ankit/virtualenvs/")
+#+end_src
+
+* DISABLED DAP - Debug Adaptor Protocol
+#+begin_src emacs-lisp
+  (use-package dap-mode
+	:ensure t :after lsp-mode
+	:config
+	(require 'dap-python)
+	(require 'dap-ui)
+	(setq dap-python-debugger `debugpy)
+	(dap-mode t)
+	(dap-ui-mode t)
+	;; enable mouse hover support
+	(dap-tooltip-mode t)
+	;; if it is not enabled, `dap-mode` will use the minibuffer
+	(tooltip-mode t)
+
+	(defun dap-python--pyenv-executable-find (command)
+	  (executable-find command))
+	 ;; Temporal fix
+	;; (defun dap-python--pyenv-executable-find (command)
+	  ;; (with-venv (executable-find "python")))
+	)
 #+end_src
 
 
-
-
-  
+* DISABLED Eglot 
+#+begin_src emacs-lisp
+  ;; (use-package eglot
+	;; :straight t
+	;; )
+#+end_src
 
