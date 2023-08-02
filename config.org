@@ -845,3 +845,13 @@ IDE like experience in emacs with debugger support.
 	;; )
 #+end_src
 
+* Todoist
+#+begin_src emacs-lisp
+  (load "~/.emacs.d/todoist-token")
+  (use-package todoist
+	;; :straight (:host github :repo "abrochard/emacs-todoist")
+	:straight t
+  )
+#+end_src
+
+
