@@ -52,12 +52,14 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 
 #+END_SRC
 
-* DISABLED Movement 
+* Movement 
   Change forward-word and backword-word to better implementation.
+  Enables word based editing commands to subword based commands. For eg.
+  GtkWindow(Word) -> Gtk and Window(Subwords)
+  
 #+begin_src emacs-lisp
-  ;; (subword-mode +1)
-  ;; ;
-										  ; (setq syntax-subword-skip-spaces t)
+  (subword-mode +1)
+                                          ; (setq syntax-subword-skip-spaces t)
 #+end_src
 
 * Font Size
@@ -291,7 +293,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 	;; (load-theme 'moe-dark t))
 #+end_src
 
-* DISABLED Aggressive Indent 
+* Aggressive Indent 
 Keeps your code always indented.
 [[https://github.com/Malabarba/aggressive-indent-mode][github]]
 #+BEGIN_SRC emacs-lisp
@@ -563,6 +565,13 @@ Simplified access to sytem clipboard.
 	  )
   (message "sphinx loaded")
 #+END_SRC
+** with-env
+Execute with Python virtual environment activated
+#+begin_src emacs-lisp
+  (use-package with-venv
+	:straight (:host github :repo "10sr/with-venv-el")
+	)
+#+end_src
 
 * Emacs Ipython Notebook EIN
   Jypyter notebook client for emacs. 
@@ -805,36 +814,44 @@ IDE like experience in emacs with debugger support.
 #+end_src
 ** LSP pyright
 #+begin_src emacs-lisp
-  ;; (use-package lsp-pyright
-  ;; :ensure t
-  ;; :hook (python-mode . (lambda ()
-  ;; 					   (require 'lsp-pyright)
-  ;; 					   (lsp-deferred))))  ; or lsp-deferred
-  ;; :config
-  ;; (setq lsp-pyright-venv-directory "/home/ankit/virtualenvs/")
+  (use-package lsp-pyright
+	:ensure t
+	:hook (python-mode . (lambda ()
+						   (require 'lsp-pyright)
+						   (lsp-deferred))))  ; or lsp-deferred
 #+end_src
 
-* DISABLED DAP - Debug Adaptor Protocol
+** LSP treemacs
+#+begin_src emacs-lisp
+  (use-package lsp-treemacs
+    :straight t
+    :config
+    (lsp-treemacs-sync-mode 1)
+    )
+#+end_src
+
+* DAP - Debug Adaptor Protocol
 #+begin_src emacs-lisp
   (use-package dap-mode
-	:ensure t :after lsp-mode
-	:config
-	(require 'dap-python)
-	(require 'dap-ui)
-	(setq dap-python-debugger `debugpy)
-	(dap-mode t)
-	(dap-ui-mode t)
-	;; enable mouse hover support
-	(dap-tooltip-mode t)
-	;; if it is not enabled, `dap-mode` will use the minibuffer
-	(tooltip-mode t)
+    :ensure t :after lsp-mode
+    :hook ((python-mode . dap-ui-mode)
+           (python-mode . dap-mode))
+    :config
+    (require 'dap-python)
+    (require 'dap-ui)
+    (setq dap-python-debugger `debugpy)
+    (dap-mode 1)
+    (dap-ui-mode 1)
+    ;; enable mouse hover support
+    (dap-tooltip-mode 1)
+    ;; if it is not enabled, `dap-mode` will use the minibuffer
+    (tooltip-mode t)
+    (dap-ui-controls-mode 1)
 
-	(defun dap-python--pyenv-executable-find (command)
-	  (executable-find command))
-	 ;; Temporal fix
-	;; (defun dap-python--pyenv-executable-find (command)
-	  ;; (with-venv (executable-find "python")))
-	)
+    (defun dap-python--pyenv-executable-find (command)
+      (with-venv (executable-find "python")))
+
+    )
 #+end_src
 
 
@@ -853,5 +870,17 @@ IDE like experience in emacs with debugger support.
 	:straight t
   )
 #+end_src
+
+* emacs-direnv
+direnv integration with emacs.
+#+begin_src emacs-lisp
+  (use-package direnv
+	:config
+	(direnv-mode))
+#+end_src
+
+
+
+
 
 
