@@ -1,0 +1,29 @@
+#+TODO: DISABLED(d) TODO(t) 
+* DISABLED ppe
+#+begin_src emacs-lisp
+  (dap-register-debug-template "ppe skill"
+  (list :type "python"
+        :args "-i"
+        :cwd nil
+        :module nil
+        :program nil
+        :env '(("DEBUG" . "1"))
+        :target-module (expand-file-name "/home/ankit/vyn/ppe/model-ppe-auditor")
+        :request "launch"
+        :name "ppe-skill"))
+#+end_src
+
+* skip
+#+begin_src emacs-lisp
+  (dap-register-debug-template "skip"
+  (list :type "python"
+		:args "-to get_dataset"
+		:cwd nil
+		:module nil
+		:program nil
+		:env '(("DEBUG" . "1"))
+		:target-module (expand-file-name "/home/ankit/vyn/repos/model-site-object-detector/model_site_object_detector/main_skip.py")
+		:request "launch"
+		:debugger "debugpy"
+		:name "skip"))
+#+end_src

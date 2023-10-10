@@ -1,11 +1,12 @@
 
 (org-babel-load-file "~/.emacs.d/config.org")
+(org-babel-load-file "~/.emacs.d/dap-config.org")
 
 ;; A GitHub username for API authentication
-(setq grip-github-user "grip-github-user")
+;; (setq grip-github-user "grip-github-user")
 
 ;; A GitHub password or auth token for API auth
-(setq grip-github-password "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")
+;; (setq grip-github-password "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")
 
 
 ;; (custom-set-variables
