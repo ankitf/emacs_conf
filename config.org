@@ -59,7 +59,7 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
   
 #+begin_src emacs-lisp
   (subword-mode +1)
-                                          ; (setq syntax-subword-skip-spaces t)
+										  ; (setq syntax-subword-skip-spaces t)
 #+end_src
 
 * Font Size
@@ -344,7 +344,8 @@ Simplified access to sytem clipboard.
   (display-time-mode t)
 #+END_SRC
 
-* Hideshow - Code Folding
+* Code Folding
+** HideShow
   Change the folding levels in the according to the language. 
 #+BEGIN_SRC emacs-lisp
 	(use-package hideshow
@@ -367,9 +368,13 @@ Simplified access to sytem clipboard.
 		 )
 	  )
 
-
-
-#+END_SRC   
+#+END_SRC
+** Origami
+#+begin_src emacs-lisp
+  (use-package origami
+	:straight t
+   )
+#+end_src
 
 * Pomodoro Timer
   Productivity timer. Give undivided attention to a specific task for 25 mins. Take a short break after.
@@ -476,21 +481,15 @@ Simplified access to sytem clipboard.
 
 #+END_SRC
 
-* Flycheck
+* DISABLED Flycheck
 #+begin_src emacs-lisp
-  ;; (use-package flycheck
-  ;;   :straight t
-  ;;   :ensure t
-  ;;   :init (global-flycheck-mode)
-	;; :custom
-	;; (flycheck-check-syntax-automaticaly '(save model-enabled))
-	;; :bind
-	;; ( :map errors
-	;; 	("n" . flycheck-next-error)
-	;; 	("p" . flycheck-previous-error)
-	;; 	("l" . flycheck-list-errors)
-	;; 	("v" . flycheck-verify-setup))
-	;; )
+  (use-package flycheck
+	:straight t
+	:ensure t
+	:init (global-flycheck-mode)
+	:custom
+	(flycheck-check-syntax-automaticaly '(save model-enabled))
+	 )
 #+end_src
 
 * Python setup
@@ -529,7 +528,7 @@ Simplified access to sytem clipboard.
   ;;   (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
   ;;   (elpy-enable))
 #+END_SRC   
-** DISABLED Jedi
+ ** DISABLED Jedi
 #+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   :straight t
@@ -538,20 +537,22 @@ Simplified access to sytem clipboard.
   ;;   :config
   ;;   (setq jedi:setup-keys t))
 #+END_SRC
-** DISABLED py-autopep8
+** py-autopep8
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package py-autopep8
-  ;;   :straight t
-  ;;   :init
-  ;;   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+  (use-package py-autopep8
+	:straight t
+	:config
+	(setq py-autopep8-options '("--aggressive" "--aggressive"))
+	(setq py-autopep8-on-save-p nil)
+	:hook ((python-mode) . py-autopep8-mode)
+   )
 #+END_SRC      
-** DISABLED python-black
+** python-black
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package python-black
-  ;; :straight t
-  ;; :demand t
-  ;; :after python
-  ;; :hook (python-mode . python-black-on-save-mode-enable-dwim))
+  (use-package python-black
+	:straight t
+	:demand t
+	:after python)
 
 #+END_SRC      
 ** sphinx docs
@@ -571,6 +572,21 @@ Execute with Python virtual environment activated
   (use-package with-venv
 	:straight (:host github :repo "10sr/with-venv-el")
 	)
+#+end_src
+** emacs-pet
+https://github.com/wyuenho/emacs-pet
+Python Executable Tracker
+#+begin_src emacs-lisp
+  (use-package pet
+	:config
+	(add-hook 'python-base-mode-hook 'pet-mode -10))
+#+end_src
+** emacs-python-isort
+Sort imports alphabetically and in sections automatically.
+#+begin_src emacs-lisp
+  (use-package python-isort
+    :straight t
+    )
 #+end_src
 
 * Emacs Ipython Notebook EIN
@@ -740,16 +756,18 @@ Code and text completion
 	:ensure t
 	:defer t
 	:custom
+	(company-minimum-prefix-length 1)
 	(company-idle-delay 0.1)
-	(company-minimum-prefix-lenght 1)
 	(company-tooltip-align-annotations t)
+	(company-require-match 'never)
+	;; dont use company is following modes
+	(company-global-modes '(not eshell-mode shell-mode eaf-mode))
 	(company-dabbrev-downcase nil)
 	(company-dabbrev-other-buffers t) ;; search buffers with same major mode
 	(company-dabbrev-ignore-case t)
-	(company-global-modes '(not eshell-mode shell-mode))
-	:hook ((text-mode . company-mode)
-		   (prog-mode . company-mode))
-	(dashboard-after-initialize . global-company-mode)
+	(company-selection-wrap-around t)
+	(setq company-backends '((company-capf company-dabbrev-code company-files)))
+	(global-company-mode t)
 	)
 #+end_src
 
@@ -761,66 +779,75 @@ Code and text completion
 
 * LSP mode.
 IDE like experience in emacs with debugger support.
-
 #+begin_src emacs-lisp
   (use-package lsp-mode
-	 :straight t
-	 :init
-	 (setq lsp-keymap-prefix "C-c l")
-	 :hook ((python-mode . lsp-deferred)			
-			(lsp-mode . lsp-enable-which-key-integration))
-	 :commands (lsp lsp-deferred)
-	 :config
-	 (setq lsp-auto-configure t)
-	 (setq lsp-pylsp-plugins-flake8-enabled t)
-	 (setq lsp-pylsp-plugins-yapf-enabled t)
-	 (setq lsp-enable-symbol-highlighting t)
-	 (setq lsp-lens-enable t)
-	 (setq lsp-headerline-breadcrumb-enable t)
-	 (setq lsp-completion-enable t)
-	 (setq lsp-modeline-diagnostic-enable t)
-	 (setq lsp-enable-snippet t)
-	 (setq lsp-completion-provider :capf)
-	 )
+	:straight t
+	:init
+	(setq lsp-keymap-prefix "C-c l")
+	:hook ((python-mode . lsp-deferred)			
+		   (lsp-mode . lsp-enable-which-key-integration))
+	:commands (lsp lsp-deferred)
+	:config
+	(setq lsp-enable-symbol-highlighting t)
+	(setq lsp-lens-enable t)
+	(setq lsp-headerline-breadcrumb-enable t)
+	(setq lsp-completion-enable t)
+	(setq lsp-modeline-diagnostic-enable t)
+	(setq lsp-enable-snippet t)
+	(setq lsp-completion-provider :capf)
+
+	(setq lsp-enable-symbol-highlighting t)
+	(setq lsp-ui-doc-enable t)
+	(setq lsp-ui-doc-show-with-cursor t)
+	(setq lsp-ui-doc-show-with-mouse t)
+	(setq lsp-lens-enable t)
+	(setq lsp-headerline-breadcrumb-enable t)
+	(setq lsp-ui-sideline-enable t)
+	(setq lsp-ui-sideline-show-code-actions nil)
+	(setq lsp-ui-sideline-show-hover nil)
+	(setq lsp-modelne-code-actions-enable t)
+
+	(setq lsp-diagnostic-provider :flycheck)
+	(setq lsp-ui-sideline-show-diagnostic t)
+	(setq lsp-eldoc-enable-hover t)
+	(setq lsp-modeline-diagnostic-enable t)
+	(setq lsp-signature-auto-activate t)
+	(setq lsp-signature-render-documentation t)
+
+	;; pylsp plugins
+	;; (setq lsp-pylsp-plugins-flake8-enabled t)
+	;; (setq lsp-pylsp-plugins-autopep8-enabled t)
+	;; (setq lsp-pylsp-plugins-mccabe-enabled t)
+
+	)
   ;;  putting clients subdir to load_path as mentioned in lsp installation page.
-  ;; (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
-  ;; (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
 #+end_src
 ** LSP UI
 #+begin_src emacs-lisp
-  ;; (use-package lsp-ui
-  ;;   :after lsp-mode
-  ;;   :commands lsp-ui-mode
-  ;;   :hook (lsp-mode . lsp-ui-mode)
-	;; :custom
-	;; (lsp-ui-doc-show-with-cursor nil)
-	;; (lsp-ui-doc-show-with-mouse nil)
-	;; (lsp-ui-doc-postion 'at-point)
-	;; (lsp-ui-sideline-delay 0.5)
-	;; (lsp-ui-peek-always-show t)
-
-	;; ;; (setq lsp-ui-sideline-show-hover t)
-	;; (setq lsp-ui-sideline-show-diagnostic t)
-	;; (setq lsp-ui-sideline-enable t)
-	;; (setq lsp-ui-diagnostic-provider 'flycheck)
-	;; (setq lsp-ui-doc-enable t)
-	;; )
-
   (use-package lsp-ui
+	:after lsp-mode
 	:commands lsp-ui-mode
-	:config
-	(setq lsp-ui-flycheck-enable t)
+	:hook (lsp-mode . lsp-ui-mode)
+	:custom
+	(setq lsp-ui-doc-postion 'at-point)
+	(setq lsp-ui-sideline-delay 0.5)
+	(setq lsp-ui-peek-always-show t)
+
+	
+
 	)
 #+end_src
 ** LSP pyright
 #+begin_src emacs-lisp
-  (use-package lsp-pyright
-	:ensure t
-	:hook (python-mode . (lambda ()
-						   (require 'lsp-pyright)
-						   (lsp-deferred))))  ; or lsp-deferred
+	(use-package lsp-pyright
+	  :ensure t
+	  :hook (python-mode . (lambda ()
+							 (require 'lsp-pyright)
+							 (lsp-deferred)))
+	  ) 
 #+end_src
-
 ** LSP treemacs
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
@@ -855,12 +882,14 @@ IDE like experience in emacs with debugger support.
 #+end_src
 
 
-* DISABLED Eglot 
+* Eglot
+#+BEGIN_COMMENT
 #+begin_src emacs-lisp
-  ;; (use-package eglot
-	;; :straight t
-	;; )
+  (use-package eglot
+	:straight t
+	)
 #+end_src
+#+END_COMMENT
 
 * Todoist
 #+begin_src emacs-lisp
@@ -873,11 +902,28 @@ IDE like experience in emacs with debugger support.
 
 * emacs-direnv
 direnv integration with emacs.
+Changes global set of environment variables.
 #+begin_src emacs-lisp
-  (use-package direnv
-	:config
-	(direnv-mode))
+  ;; (use-package direnv
+	;; :config
+	;; (direnv-mode))
 #+end_src
+** .envrc
+Sets all the environment variables locally.
+#+begin_src emacs-lisp
+  (use-package envrc
+	:straight t
+	:config
+	(envrc-global-mode)
+	)
+#+end_src
+
+
+* Finish message
+#+begin_src emacs-lisp
+  (message "config loaded")
+#+end_src
+
 
 
 
