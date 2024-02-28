@@ -335,7 +335,10 @@ Simplified access to sytem clipboard.
 #+END_SRC
 ** Shrink fringes/borders to 1 pixel   
 #+BEGIN_SRC emacs-lisp
-(fringe-mode 1)
+  ;; (fringe-mode 1)
+  ;; (setq left-fringe-width 16)
+  (set-fringe-style (quote (2 . 8))) 
+  (set-fringe-style (quote (12 . 8)))
 #+END_SRC
 
 * Display time Mode
@@ -481,7 +484,7 @@ Simplified access to sytem clipboard.
 
 #+END_SRC
 
-* DISABLED Flycheck
+* Flycheck
 #+begin_src emacs-lisp
   (use-package flycheck
 	:straight t
@@ -542,7 +545,7 @@ Simplified access to sytem clipboard.
   (use-package py-autopep8
 	:straight t
 	:config
-	(setq py-autopep8-options '("--aggressive" "--aggressive"))
+	(setq py-autopep8-options '("--aggressive"))
 	(setq py-autopep8-on-save-p nil)
 	:hook ((python-mode) . py-autopep8-mode)
    )
@@ -775,10 +778,18 @@ Code and text completion
 
 * TODO Mwin - Move where I Mean
 
-* TODO Yasnippet
+* Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+	:straight t
+	:config
+	(yas-global-mode 1)
+   )
+#+end_src
 
-* LSP mode.
+* DISABLED LSP mode.
 IDE like experience in emacs with debugger support.
+#+begin_comment
 #+begin_src emacs-lisp
   (use-package lsp-mode
 	:straight t
@@ -824,6 +835,7 @@ IDE like experience in emacs with debugger support.
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
 #+end_src
+#+end_comment
 ** LSP UI
 #+begin_src emacs-lisp
   (use-package lsp-ui
@@ -848,7 +860,8 @@ IDE like experience in emacs with debugger support.
 							 (lsp-deferred)))
 	  ) 
 #+end_src
-** LSP treemacs
+** DISABLED LSP treemacs
+#+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
     :straight t
@@ -856,6 +869,7 @@ IDE like experience in emacs with debugger support.
     (lsp-treemacs-sync-mode 1)
     )
 #+end_src
+#+END_COMMENT
 
 * DAP - Debug Adaptor Protocol
 #+begin_src emacs-lisp
@@ -883,13 +897,39 @@ IDE like experience in emacs with debugger support.
 
 
 * Eglot
-#+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package eglot
 	:straight t
+	:ensure t
+	:config
+	(with-eval-after-load "eglot"
+	  (add-to-list 'eglot-stay-out-of 'flymake))
+
+	;; add arduino-language server
+	;; (add-to-list 'eglot-server-programs '(c++-mode . ("~/ankit/tools/arduino-language-server/arduino-language-server"
+	;; 													"-clangd" "/usr/bin/clangd-12"
+	;; 													"-cli" "~/.local/bin/arduino-cli"
+	;; 													"-cli-config" "~/.arduino15/arduino-cli.yaml"
+	;; 													"-fqbn" "arduino:avr:mega")))
+
+	;; add cpp lsp server
+	(add-to-list 'eglot-server-programs
+				 '((c++mode c-mode) "clangd-12")
+				 `(rust-mode . ("rust-analyzer" :initializationOptions
+									 ( :procMacro (:enable t)
+									   :cargo ( :buildScripts (:enable t)
+												:features "all"))))
+				 )
+
+	:hook
+	((python-mode . eglot-ensure)
+	 ;; (arduino-mode . eglot-ensure)
+	 (c++-mode . eglot-ensure)
+	 (c-mode. eglot-ensure)
+	 (rust-mode . eglot-ensure)
+	 )
 	)
 #+end_src
-#+END_COMMENT
 
 * Todoist
 #+begin_src emacs-lisp
@@ -917,6 +957,36 @@ Sets all the environment variables locally.
 	(envrc-global-mode)
 	)
 #+end_src
+
+
+* Arduino Mode
+#+begin_src emacs-lisp
+  ;; (use-package arduino-mode
+  ;;   :straight t
+  ;;   )
+#+end_src
+
+* Json mode
+#+begin_src emacs-lisp
+  (use-package json-mode
+	:straight t
+	:config
+	(add-hook 'json-mode-hook
+			  (lambda ()
+				(make-local-variable 'js-indent-level)
+				(setq tab-width 2)
+				(setq js-indent-level 2)))
+
+	)
+#+end_src
+
+* Rust mode
+#+begin_src emacs-lisp
+  (use-package rust-mode
+	:straight t
+	)
+#+end_src
+
 
 
 * Finish message
