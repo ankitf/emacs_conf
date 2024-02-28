@@ -1,16 +1,25 @@
-#+TODO: DISABLED(d) TODO(t) 
+#+TODO: DISABLED(d) TODO(t)
+
+* Enable dap
+#+begin_src emacs-lisp
+  (require 'dap-python)
+  ;; if you installed debugpy, you need to set this
+  ;; https://github.com/emacs-lsp/dap-mode/issues/306
+  (setq dap-python-debugger 'debugpy)
+#+end_src
+
 * DISABLED ppe
 #+begin_src emacs-lisp
   (dap-register-debug-template "ppe skill"
-  (list :type "python"
-        :args "-i"
-        :cwd nil
-        :module nil
-        :program nil
-        :env '(("DEBUG" . "1"))
-        :target-module (expand-file-name "/home/ankit/vyn/ppe/model-ppe-auditor")
-        :request "launch"
-        :name "ppe-skill"))
+							   (list :type "python"
+									 :args ""
+									 :cwd nil
+									 :module nil
+									 :program nil
+									 ;; :env '(("DEBUG" . "1"))
+									 :target-module (expand-file-name "/home/ankit/vyn/ppe/model-ppe-auditor/model_ppe_auditor/skill.py")
+									 ;; :request "launch"
+									 :name "ppe-skill"))
 #+end_src
 
 * skip
