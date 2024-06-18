@@ -998,8 +998,8 @@ Sets all the environment variables locally.
 	(add-hook 'json-mode-hook
 			  (lambda ()
 				(make-local-variable 'js-indent-level)
-				(setq tab-width 2)
-				(setq js-indent-level 2)))
+				(setq tab-width 4)
+				(setq js-indent-level 4)))
 
 	)
 #+end_src
@@ -1011,12 +1011,111 @@ Sets all the environment variables locally.
 	)
 #+end_src
 
-* Treesitter
+* TODO Treesitter
+Inbuild from emacs 29.
 #+begin_src emacs-lisp
   
 #+end_src
 
 
+* Frontend setup
+** DISABLED Typescript mode
+For javascript and nextjs
+#+BEGIN_COMMENT
+#+begin_src emacs-lisp
+  (use-package typescript-mode
+	:straight t
+	:ensure t
+	:config
+	(setq typescript-indent-level 4)
+	(add-hook 'typescript-mode #'subword-mode)
+	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+
+	)
+
+#+end_src
+#+END_COMMENT
+
+** DISABLED Tide - Typescript Interactive Dev
+https://github.com/ananthakumaran/tide
+#+BEGIN_COMMENT
+#+begin_src emacs-lisp
+  (use-package tide
+	:ensure t
+	:after (typescript-mode company flycheck)
+	:hook ((typescript-mode . tide-setup)
+		   (typescript-mode . tide-hl-identifier-mode)
+		   (before-save . tide-format-before-save)))
+#+end_src
+#+END_COMMENT
+
+** Prettier-js 
+Formatting for js code
+
+#+begin_src emacs-lisp
+  (use-package prettier-js
+	:straight t
+	:config
+	(setq prettier-js-args '(
+							 "--trailing-comma" "all"
+							 "--bracket-spacing" "false"
+							 "--tab-width" "4"
+							 ))
+	)
+#+end_src
+
+** Web mode
+
+#+begin_src emacs-lisp
+  (use-package web-mode
+	:straight t
+	:config
+	(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+	)
+#+end_src
+
+** DISABLED RJSX Mode
+#+BEGIN_COMMENT
+#+begin_src emacs-lisp
+  (use-package rjsx-mode
+	:straight t
+	:ensure t
+	:config 
+	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
+	)
+#+end_src
+#+END_COMMENT
+
+** DISABLED Tailwind LSP
+LSP client for tailwind. Autocompletes tailwind utility classes
+#+BEGIN_COMMENT
+#+begin_src emacs-lisp
+  (use-package lsp-tailwindcss
+	:straight (:host github :repo "merrickluo/lsp-tailwindcss")
+	:init 
+	(setq lsp-tailwindcss-add-on-mode t)
+	)
+#+end_src
+#+END_COMMENT
+
+* LSP Mode simple
+#+BEGIN_COMMENT
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+	 :init
+	 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+	 (setq lsp-keymap-prefix "C-c l")
+	 :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+			(typescript-mode . lsp)
+			(rjsx-mode . lsp)
+			;; if you want which-key integration
+			(lsp-mode . lsp-enable-which-key-integration))
+	 :commands lsp)
+
+  (use-package lsp-ui :commands lsp-ui-mode)
+
+#+end_src
+#+END_COMMENT
 
 * Finish message
 #+begin_src emacs-lisp
