@@ -500,8 +500,7 @@ Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbu
 	:straight t
 	:ensure t
 	:config
-	(add-hook 'after-init-hook #'global-flycheck-mode))
-
+	(add-hook 'after-init-hook #'global-flycheck-mode)
 	)
 #+end_src
 
@@ -959,6 +958,9 @@ IDE like experience in emacs with debugger support.
 	 ;; (c-mode. eglot-ensure)
 	 ;; (rust-mode . eglot-ensure)
 	 (typescript-mode . eglot-ensure)
+	 (jtsx-jsx-mode . eglot-ensure)
+	 (jtsx-tsx-mode . eglot-ensure)
+	 (jtsx-typescript-mode . eglot-ensure)
 	 )
 	)
 
@@ -975,7 +977,7 @@ IDE like experience in emacs with debugger support.
 #+end_src
 #+end_comment
 
-* emacs-direnv
+* DISABLED emacs-direnv
 direnv integration with emacs.
 Changes global set of environment variables.
 #+begin_src emacs-lisp
@@ -1004,15 +1006,15 @@ Sets all the environment variables locally.
 * Json mode
 #+begin_src emacs-lisp
   (use-package json-mode
-	:straight t
-	:config
-	(add-hook 'json-mode-hook
-			  (lambda ()
-				(make-local-variable 'js-indent-level)
-				(setq tab-width 4)
-				(setq js-indent-level 4)))
+    :straight t
+    :config
+    (add-hook 'json-mode-hook
+              (lambda ()
+                (make-local-variable 'js-indent-level)
+                (setq tab-width 4)
+                (setq js-indent-level 4)))
 
-	)
+    )
 #+end_src
 
 * Rust mode
@@ -1108,6 +1110,64 @@ LSP client for tailwind. Autocompletes tailwind utility classes
 	)
 #+end_src
 #+END_COMMENT
+
+** JTSX Mode
+Extends emacs support for jsx/tsx. Works with treesitter.
+Install treesitter language grammer before using the package.
+Refer https://github.com/llemaitre19/jtsx for installation steps. 
+
+#+begin_src emacs-lisp
+  (use-package jtsx
+	:straight (:host github :repo "llemaitre19/jtsx")
+	:ensure t
+	:mode (("\\.jsx?\\'" . jtsx-jsx-mode)
+		   ("\\.tsx\\'" . jtsx-tsx-mode)
+		   ("\\.ts\\'" . jtsx-typescript-mode))
+	:commands jtsx-install-treesit-language
+	:hook ((jtsx-jsx-mode . hs-minor-mode)
+		   (jtsx-tsx-mode . hs-minor-mode)
+		   (jtsx-typescript-mode . hs-minor-mode))
+	;; :custom
+	;; Optional customizations
+	;; (js-indent-level 2)
+	;; (typescript-ts-mode-indent-offset 2)
+	;; (jtsx-switch-indent-offset 0)
+	;; (jtsx-indent-statement-block-regarding-standalone-parent nil)
+	;; (jtsx-jsx-element-move-allow-step-out t)
+	;; (jtsx-enable-jsx-electric-closing-element t)
+	;; (jtsx-enable-electric-open-newline-between-jsx-element-tags t)
+	;; (jtsx-enable-jsx-element-tags-auto-sync nil)
+	;; (jtsx-enable-all-syntax-highlighting-features t)
+	:config
+	(defun jtsx-bind-keys-to-mode-map (mode-map)
+	  "Bind keys to MODE-MAP."
+	  (define-key mode-map (kbd "C-c C-j") 'jtsx-jump-jsx-element-tag-dwim)
+	  (define-key mode-map (kbd "C-c j o") 'jtsx-jump-jsx-opening-tag)
+	  (define-key mode-map (kbd "C-c j c") 'jtsx-jump-jsx-closing-tag)
+	  (define-key mode-map (kbd "C-c j r") 'jtsx-rename-jsx-element)
+	  (define-key mode-map (kbd "C-c <down>") 'jtsx-move-jsx-element-tag-forward)
+	  (define-key mode-map (kbd "C-c <up>") 'jtsx-move-jsx-element-tag-backward)
+	  (define-key mode-map (kbd "C-c C-<down>") 'jtsx-move-jsx-element-forward)
+	  (define-key mode-map (kbd "C-c C-<up>") 'jtsx-move-jsx-element-backward)
+	  (define-key mode-map (kbd "C-c C-S-<down>") 'jtsx-move-jsx-element-step-in-forward)
+	  (define-key mode-map (kbd "C-c C-S-<up>") 'jtsx-move-jsx-element-step-in-backward)
+	  (define-key mode-map (kbd "C-c j w") 'jtsx-wrap-in-jsx-element)
+	  (define-key mode-map (kbd "C-c j u") 'jtsx-unwrap-jsx)
+	  (define-key mode-map (kbd "C-c j d") 'jtsx-delete-jsx-node)
+	  (define-key mode-map (kbd "C-c j t") 'jtsx-toggle-jsx-attributes-orientation)
+	  (define-key mode-map (kbd "C-c j h") 'jtsx-rearrange-jsx-attributes-horizontally)
+	  (define-key mode-map (kbd "C-c j v") 'jtsx-rearrange-jsx-attributes-vertically))
+
+	(defun jtsx-bind-keys-to-jtsx-jsx-mode-map ()
+	  (jtsx-bind-keys-to-mode-map jtsx-jsx-mode-map))
+
+	(defun jtsx-bind-keys-to-jtsx-tsx-mode-map ()
+	  (jtsx-bind-keys-to-mode-map jtsx-tsx-mode-map))
+
+	(add-hook 'jtsx-jsx-mode-hook 'jtsx-bind-keys-to-jtsx-jsx-mode-map)
+	(add-hook 'jtsx-tsx-mode-hook 'jtsx-bind-keys-to-jtsx-tsx-mode-map)
+	)
+#+end_src
 
 * LSP Mode simple
 #+BEGIN_COMMENT
