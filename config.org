@@ -28,6 +28,15 @@
 (setq inhibit-startup-message t)
 #+END_SRC
 
+* Command as meta on mac
+#+begin_src emacs-lisp
+  ;;; I prefer cmd key for meta
+(setq mac-option-key-is-meta nil
+      mac-command-key-is-meta t
+      mac-command-modifier 'meta
+      mac-option-modifier 'super)
+#+end_src
+
 * Backspace Key
 Set ctrl+h as backspace and ctrl+? as emacs-help
 #+BEGIN_SRC emacs-lisp
