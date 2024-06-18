@@ -710,13 +710,14 @@ Graphical frontend for org roam zettelkasten
 
 #+end_src
   
-* GTD 
+* DISABLED GTD 
   Getting things done 
   inbox - capture tasks, while reviewing, refile the task to corresponding file, project
   personal - personal projects tracking
   vyn - projects related to vyntelligence, humanlearning pvt ltd
   tickler - add task with timestamp to get reminded at the right moment, it would
   be easier if able to integrate google calender with this
+  #+BEGIN_COMMENT
 #+begin_src emacs-lisp
 (setq org-agenda-files '("~/ankit/emacs/gtd/inbox.org"
                          "~/ankit/emacs/gtd/personal.org"
@@ -738,6 +739,7 @@ Graphical frontend for org roam zettelkasten
                           ("~/ankit/emacs/gtd/tickler.org" :maxlevel . 2)))
 
 #+end_src
+#+END_COMMENT
 
 * Markdown mode
   Major mode for editing markdown formatted text.
