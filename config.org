@@ -74,7 +74,7 @@ Set ctrl+h as backspace and ctrl+? as emacs-help
 * Font Size
   The value is in 1/10pt, so 100 will give you 10pt, etc.
 #+begin_src emacs-lisp
-(set-face-attribute 'default  nil :height 70)
+(set-face-attribute 'default  nil :height 100)
 #+end_src
 
 * Which key
@@ -494,14 +494,15 @@ Simplified access to sytem clipboard.
 #+END_SRC
 
 * Flycheck
+Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbuild flymake
 #+begin_src emacs-lisp
   (use-package flycheck
 	:straight t
 	:ensure t
-	:init (global-flycheck-mode)
-	:custom
-	(flycheck-check-syntax-automaticaly '(save model-enabled))
-	 )
+	:config
+	(add-hook 'after-init-hook #'global-flycheck-mode))
+
+	)
 #+end_src
 
 * Python setup
@@ -857,8 +858,10 @@ IDE like experience in emacs with debugger support.
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
 #+end_src
-#+end_comment
+#+END_COMMENT
+
 ** LSP UI
+#+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package lsp-ui
 	:after lsp-mode
@@ -869,10 +872,11 @@ IDE like experience in emacs with debugger support.
 	(setq lsp-ui-sideline-delay 0.5)
 	(setq lsp-ui-peek-always-show t)
 
-	
-
 	)
 #+end_src
+#+END_COMMENT
+
+
 ** LSP pyright
 #+begin_src emacs-lisp
   (use-package lsp-pyright
@@ -884,8 +888,9 @@ IDE like experience in emacs with debugger support.
 	(setq lsp-enable-file-watchers nil)
 	) 
 #+end_src
-** DISABLED LSP treemacs
-#+BEGIN_COMMENT
+
+** LSP treemacs
+#+begin_comment
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
     :straight t
@@ -893,7 +898,7 @@ IDE like experience in emacs with debugger support.
     (lsp-treemacs-sync-mode 1)
     )
 #+end_src
-#+END_COMMENT
+#+end_comment
 
 * DAP - Debug Adaptor Protocol
 #+begin_src emacs-lisp
@@ -921,6 +926,7 @@ IDE like experience in emacs with debugger support.
 
 
 * Eglot
+
 #+begin_src emacs-lisp
   (use-package eglot
 	:straight t
@@ -937,25 +943,29 @@ IDE like experience in emacs with debugger support.
 	;; 													"-fqbn" "arduino:avr:mega")))
 
 	;; add cpp lsp server
-	(add-to-list 'eglot-server-programs
-				 '((c++mode c-mode) "clangd-12")
-				 `(rust-mode . ("rust-analyzer" :initializationOptions
-									 ( :procMacro (:enable t)
-									   :cargo ( :buildScripts (:enable t)
-												:features "all"))))
-				 )
+	;; (add-to-list 'eglot-server-programs
+	;; 			   '((c++mode c-mode) "clangd-12")
+	;; 			   ()
+	;; 			   `(rust-mode . ("rust-analyzer" :initializationOptions
+	;; 								   ( :procMacro (:enable t)
+	;; 									 :cargo ( :buildScripts (:enable t)
+	;; 											  :features "all"))))
+				 ;; )
 
 	:hook
 	((python-mode . eglot-ensure)
 	 ;; (arduino-mode . eglot-ensure)
-	 (c++-mode . eglot-ensure)
-	 (c-mode. eglot-ensure)
-	 (rust-mode . eglot-ensure)
+	 ;; (c++-mode . eglot-ensure)
+	 ;; (c-mode. eglot-ensure)
+	 ;; (rust-mode . eglot-ensure)
+	 (typescript-mode . eglot-ensure)
 	 )
 	)
+
 #+end_src
 
-* Todoist
+* DISABLED Todoist
+#+begin_comment
 #+begin_src emacs-lisp
   (load "~/.emacs.d/todoist-token")
   (use-package todoist
@@ -963,6 +973,7 @@ IDE like experience in emacs with debugger support.
 	:straight t
   )
 #+end_src
+#+end_comment
 
 * emacs-direnv
 direnv integration with emacs.
@@ -983,7 +994,7 @@ Sets all the environment variables locally.
 #+end_src
 
 
-* Arduino Mode
+* DISABLED Arduino Mode
 #+begin_src emacs-lisp
   ;; (use-package arduino-mode
   ;;   :straight t
