@@ -501,6 +501,10 @@ Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbu
 	:ensure t
 	:config
 	(add-hook 'after-init-hook #'global-flycheck-mode)
+	(flycheck-add-mode 'typescript-tslint 'web-mode)
+	(flycheck-add-mode 'typescript-tslint 'jtsx-jsx-mode)
+	(flycheck-add-mode 'typescript-tslint 'jtsx-tsx-mode)
+	(flycheck-add-mode 'typescript-tslint 'jtsx-typescript-mode)
 	)
 #+end_src
 
@@ -811,16 +815,27 @@ https://github.com/manateelazycat/lsp-bridge
 #+end_src
 #+END_COMMENT
 
-* DISABLED LSP mode.
+* LSP mode.
 IDE like experience in emacs with debugger support.
-#+BEGIN_COMMENT
+** Fix LSP performance issues
+https://emacs-lsp.github.io/lsp-mode/page/performance/
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  (setq lsp-log-io nil) ; if set to true can cause a performance hit
+
+#+end_src
+
 #+begin_src emacs-lisp
   (use-package lsp-mode
 	:straight (:host github :repo "emacs-lsp/lsp-mode")
 	:init
 	(setq lsp-keymap-prefix "C-c l")
 	:hook ((python-mode . lsp-deferred)			
-		   (lsp-mode . lsp-enable-which-key-integration))
+		   (lsp-mode . lsp-enable-which-key-integration)
+		   (jtsx-jsx-mode . lsp)
+		   (jtsx-tsx-mode . lsp)
+		   (jtsx-typescript-mode . lsp))
 	:commands (lsp lsp-deferred)
 	:config
 	(setq lsp-enable-symbol-highlighting t)
@@ -859,10 +874,9 @@ IDE like experience in emacs with debugger support.
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode" user-emacs-directory))
   (add-to-list 'load-path (expand-file-name "straight/repos/lsp-mode/clients" user-emacs-directory))
 #+end_src
-#+END_COMMENT
 
 ** LSP UI
-#+BEGIN_COMMENT
+
 #+begin_src emacs-lisp
   (use-package lsp-ui
 	:after lsp-mode
@@ -870,12 +884,11 @@ IDE like experience in emacs with debugger support.
 	:hook (lsp-mode . lsp-ui-mode)
 	:custom
 	(setq lsp-ui-doc-postion 'at-point)
-	(setq lsp-ui-sideline-delay 0.5)
+	(setq lsp-ui-sideline-delay 0.1)
 	(setq lsp-ui-peek-always-show t)
 
 	)
 #+end_src
-#+END_COMMENT
 
 
 ** LSP pyright
@@ -891,7 +904,7 @@ IDE like experience in emacs with debugger support.
 #+end_src
 
 ** LSP treemacs
-#+begin_comment
+
 #+begin_src emacs-lisp
   (use-package lsp-treemacs
     :straight t
@@ -899,7 +912,7 @@ IDE like experience in emacs with debugger support.
     (lsp-treemacs-sync-mode 1)
     )
 #+end_src
-#+end_comment
+
 
 * DAP - Debug Adaptor Protocol
 #+begin_src emacs-lisp
@@ -926,8 +939,8 @@ IDE like experience in emacs with debugger support.
 #+end_src
 
 
-* Eglot
-
+* DISABLED Eglot
+#+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package eglot
 	:straight t
@@ -953,6 +966,9 @@ IDE like experience in emacs with debugger support.
 	;; 											  :features "all"))))
 				 ;; )
 
+	;; (add-to-list 'eglot-server-programs '((jtsx-tsx-mode jtsx-typescript-mode jtsx-jsx-mode) . ("tailwindcss-language-server")))
+
+
 	:hook
 	((python-mode . eglot-ensure)
 	 ;; (arduino-mode . eglot-ensure)
@@ -967,6 +983,7 @@ IDE like experience in emacs with debugger support.
 	)
 
 #+end_src
+#+END_COMMENT
 
 * DISABLED Todoist
 #+begin_comment
@@ -1101,9 +1118,9 @@ Formatting for js code
 #+end_src
 #+END_COMMENT
 
-** DISABLED Tailwind LSP
+** Tailwind LSP
 LSP client for tailwind. Autocompletes tailwind utility classes
-#+BEGIN_COMMENT
+
 #+begin_src emacs-lisp
   (use-package lsp-tailwindcss
 	:straight (:host github :repo "merrickluo/lsp-tailwindcss")
@@ -1111,7 +1128,7 @@ LSP client for tailwind. Autocompletes tailwind utility classes
 	(setq lsp-tailwindcss-add-on-mode t)
 	)
 #+end_src
-#+END_COMMENT
+
 
 ** JTSX Mode
 Extends emacs support for jsx/tsx. Works with treesitter.
@@ -1182,10 +1199,13 @@ Refer https://github.com/llemaitre19/jtsx for installation steps.
 			(typescript-mode . lsp)
 			(rjsx-mode . lsp)
 			;; if you want which-key integration
-			(lsp-mode . lsp-enable-which-key-integration))
+			(lsp-mode . lsp-enable-which-key-integration)
+			(jtsx-jsx-mode . lsp)
+			(jtsx-tsx-mode . lsp)
+			(jtsx-typescript-mode . lsp))
 	 :commands lsp)
 
-  (use-package lsp-ui :commands lsp-ui-mode)
+	(use-package lsp-ui :commands lsp-ui-mode)
 
 #+end_src
 #+END_COMMENT
