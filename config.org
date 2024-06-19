@@ -256,17 +256,17 @@ Was not able to clone tango-dark-theme.el from Emacs repo. So created a personal
   ;; :config (load-theme 'tango-dark))
 
 #+END_SRC
-** DISABLED Zenburn
+** Zenburn
 [[https://github.com/bbatsov/zenburn-emacs][Github]]
 Much better than tango-dark. Low contrast and cyan background is easy on the eye. Love it. :)
-#+BEGIN_COMMENT
+
 #+BEGIN_SRC emacs-lisp
   (use-package zenburn-theme
 	:straight t
 	:config
 	(load-theme 'zenburn t))
 #+END_SRC
-#+END_COMMENT
+
 ** DISABLED Nord
 [[https://www.nordtheme.com/docs/ports/emacs][website]]
 #+BEGIN_SRC emacs-lisp
@@ -304,6 +304,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 	;; (load-theme 'moe-dark t))
 #+end_src
 ** Catpuccin-theme
+#+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package catppuccin-theme
 	:straight t
@@ -314,6 +315,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 	)
 
 #+end_src
+#+END_COMMENT
 
 * Aggressive Indent 
 Keeps your code always indented.
