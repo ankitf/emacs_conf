@@ -303,7 +303,7 @@ Much better than tango-dark. Low contrast and cyan background is easy on the eye
 	;; :config
 	;; (load-theme 'moe-dark t))
 #+end_src
-** Catpuccin-theme
+** DISABLED Catpuccin-theme
 #+BEGIN_COMMENT
 #+begin_src emacs-lisp
   (use-package catppuccin-theme
@@ -549,17 +549,19 @@ Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbu
 	(pyvenv-mode t)
 	)
 #+END_SRC
-** DISABLED Elpy
+** Elpy
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package elpy
-  ;;   :straight t
-  ;;   :init (advice-add 'python-mode :before 'elpy-enable)
-  ;;   ;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
-  ;;   :config
-  ;;   (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
-  ;;   (elpy-enable))
+  (use-package elpy
+	:straight t
+	:init (advice-add 'python-mode :before 'elpy-enable)
+	;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+	:custom
+	(elpy-rpc-virtualenv-path 'current)  ;; this makes elpy use direnv venvs, check direnv setup section
+	;; :config
+	;; (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
+	(elpy-enable))
 #+END_SRC   
- ** DISABLED Jedi
+** DISABLED Jedi
 #+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   :straight t
@@ -597,12 +599,12 @@ Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbu
 	  )
   (message "sphinx loaded")
 #+END_SRC
-** with-env
+** DISABLED with-env
 Execute with Python virtual environment activated
 #+begin_src emacs-lisp
-  (use-package with-venv
-	:straight (:host github :repo "10sr/with-venv-el")
-	)
+  ;; (use-package with-venv
+  ;;   :straight (:host github :repo "10sr/with-venv-el")
+  ;;   )
 #+end_src
 ** emacs-pet
 https://github.com/wyuenho/emacs-pet
@@ -618,6 +620,18 @@ Sort imports alphabetically and in sections automatically.
   (use-package python-isort
     :straight t
     )
+#+end_src
+** direnv setup
+https://blog.jasper.es/elpy-direnv.html
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+	:config (progn (exec-path-from-shell-initialize)))
+  (use-package direnv
+	:after exec-path-from-shell
+	:config (direnv-mode))
+
+  (use-package envrc
+	:hook (after-init . envrc-global-mode))
 #+end_src
 
 * Emacs Ipython Notebook EIN
@@ -1224,6 +1238,23 @@ Refer https://github.com/llemaitre19/jtsx for installation steps.
 
 #+end_src
 #+END_COMMENT
+
+* Gptel - LLM Client
+  [[https://github.com/karthink/gptel][github]]
+  Do not commit api key. For chatgpt create ~/.authinfo for credentials.
+#+begin_src emacs-lisp
+  (use-package gptel
+	:straight t
+	:config
+	;; OPTIONAL configuration
+	;; Configuration for Claude
+	;; (setq
+	;;  gptel-model "claude-3-sonnet-20240229" ;  "claude-3-opus-20240229" also available
+	;;  gptel-backend (gptel-make-anthropic "Claude"
+	;; 									   :stream t :key ""))
+	
+   ) 
+#+end_src
 
 * Finish message
 #+begin_src emacs-lisp
