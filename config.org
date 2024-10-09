@@ -1264,6 +1264,15 @@ Refer https://github.com/llemaitre19/jtsx for installation steps.
    ) 
 #+end_src
 
+* Restclient
+   [[https://github.com/pashky/restclient.el][github]]
+   #+BEGIN_SRC emacs-lisp
+	 (use-package restclient
+	   :straight t
+	   )
+   #+END_SRC
+  
+
 * Finish message
 #+begin_src emacs-lisp
   (message "config loaded")
