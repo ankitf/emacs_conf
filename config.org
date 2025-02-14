@@ -540,26 +540,25 @@ Modern on-the-fly syntax checking for emacs. Supposed to be replacement for inbu
    I have dedicated a virtual environment for emacs related python packages.
    Make sure to include the requirement.txt of this env to .emacs.d git repo.
 #+BEGIN_SRC emacs-lisp
-  (use-package pyvenv
-	:straight t
-	:config
-	;; (pyvenv-activate "~/.virtualenvs/emacs-virtualenv")
-	(setenv "WORKON_HOME" "~/virtualenvs")
-	(setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] ")))
-	(pyvenv-mode t)
-	)
+  ;; (use-package pyvenv
+  ;;   :straight t
+  ;;   :config
+  ;;   ;; (pyvenv-activate "~/.virtualenvs/emacs-virtualenv")
+  ;;   (setenv "WORKON_HOME" "~/virtualenvs")
+  ;;   (setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] ")))
+  ;;   (pyvenv-mode t))
 #+END_SRC
 ** Elpy
 #+BEGIN_SRC emacs-lisp
-  (use-package elpy
-	:straight t
-	:init (advice-add 'python-mode :before 'elpy-enable)
-	;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
-	:custom
-	(elpy-rpc-virtualenv-path 'current)  ;; this makes elpy use direnv venvs, check direnv setup section
-	;; :config
-	;; (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
-	(elpy-enable))
+  ;; (use-package elpy
+  ;;   :straight t
+  ;;   :init (advice-add 'python-mode :before 'elpy-enable)
+  ;;   ;; :hook (elpy-mode . (lambda () (add-hook 'before-save-hook 'elpy-format-code)))
+  ;;   :custom
+  ;;   (elpy-rpc-virtualenv-path 'current)  ;; this makes elpy use direnv venvs, check direnv setup section
+  ;;   ;; :config
+  ;;   ;; (setq elpy-rpc-virtualenv-path "~/virtualenvs/emacs_virtualenv/")
+  ;;   (elpy-enable))
 #+END_SRC   
 ** DISABLED Jedi
 #+BEGIN_SRC emacs-lisp
@@ -633,6 +632,14 @@ https://blog.jasper.es/elpy-direnv.html
   (use-package envrc
 	:hook (after-init . envrc-global-mode))
 #+end_src
+** poetry
+#+BEGIN_SRC emacs-lisp
+  (use-package poetry
+	:straight t
+	:ensure t
+	:after python)
+
+#+END_SRC
 
 * Emacs Ipython Notebook EIN
   Jypyter notebook client for emacs. 
@@ -901,6 +908,9 @@ https://emacs-lsp.github.io/lsp-mode/page/performance/
 	(setq lsp-signature-auto-activate t)
 	(setq lsp-signature-render-documentation t)
 
+	;; fixes double imports and tsconfig popup in ts ls server
+	(setq lsp-apply-edits-after-file-operations nil)
+
 	;; pylsp plugins
 	;; (setq lsp-pylsp-plugins-flake8-enabled t)
 	;; (setq lsp-pylsp-plugins-autopep8-enabled t)
@@ -932,6 +942,8 @@ https://emacs-lsp.github.io/lsp-mode/page/performance/
 #+begin_src emacs-lisp
   (use-package lsp-pyright
 	:ensure t
+	:custom (lsp-pyright-langserver-command "basedpyright") ;; or basedpyright
+
 	:hook (python-mode . (lambda ()
 						   (require 'lsp-pyright)
 						   (lsp-deferred)))
